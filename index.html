@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>La Sintesi Proteica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f2ee;--card:#fff;--border:#e2e8f0;
+  --pri:#1e40af;--priLt:#dbeafe;
+  --teal:#0f766e;--tealLt:#ccfbf1;
+  --amber:#d97706;--amberLt:#fef3c7;
+  --ok:#16a34a;--okLt:#dcfce7;
+  --err:#dc2626;
+  --txt:#1e293b;--txtM:#475569;--txtL:#94a3b8;
+  --grid:#e8e5df;
+  --f:'Source Serif 4','Georgia',serif;
+  --fs:'DM Sans','Segoe UI',sans-serif;
+  --fm:'JetBrains Mono','Consolas',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),var(--bg);background-size:40px 40px,40px 40px,100% 100%;font-family:var(--fs);color:var(--txt);padding:20px 16px;-webkit-text-size-adjust:100%}
+#app{max-width:780px;margin:0 auto}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .4s ease both}
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);padding:24px 28px;margin-bottom:20px}
+.btn{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;font-family:var(--fs);cursor:pointer;transition:all .2s;border:none;display:inline-block;min-height:44px;-webkit-tap-highlight-color:transparent}
+.btn:hover:not(:disabled){filter:brightness(.93)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-pri{background:var(--pri);color:#fff}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-out{background:transparent;color:var(--pri);border:2px solid var(--pri)}
+.btn-gh{background:transparent;color:var(--txtM);border:1px solid var(--border)}
+.btn-teal{background:var(--teal);color:#fff}
+h1{font-family:var(--f);font-size:28px;font-weight:700;margin-bottom:2px}
+h2{font-family:var(--f);font-size:22px;font-weight:600}
+.base{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-family:var(--fm);font-weight:700;color:#fff;transition:all .35s}
+.amino{display:flex;flex-direction:column;align-items:center;gap:2px}
+.amino-circle{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;color:#fff;transition:all .3s}
+.amino-label{font-size:9px;color:var(--txtL);font-family:var(--fs);text-align:center;max-width:52px;line-height:1.1}
+.step-card{border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:12px}
+.step-card .step-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;font-family:var(--fs)}
+.opt-btn{text-align:left;padding:12px 14px;border-radius:8px;font-size:14px;font-family:var(--fs);cursor:pointer;transition:all .2s;width:100%;display:block;margin-bottom:8px;background:#fff;border:1px solid var(--border);color:var(--txt);min-height:44px;-webkit-tap-highlight-color:transparent}
+.opt-btn:hover{border-color:var(--pri)}
+.opt-btn.selected{background:var(--tealLt);border:2px solid var(--teal)}
+.opt-btn.wrong{background:#fef2f2;border:2px solid var(--err)}
+.opt-btn.correct{background:var(--okLt);border:2px solid var(--ok);color:var(--ok)}
+.opt-btn:disabled{cursor:default}
+.progress-dots{display:flex;gap:3px}
+.progress-dots span{height:8px;border-radius:4px;transition:all .3s}
+.nav-phases{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px;flex-wrap:wrap}
+.nav-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:14px;font-weight:700;transition:all .3s}
+.nav-line{width:28px;height:2px;margin-bottom:18px;transition:background .3s}
+.step-bar{display:flex;gap:6px;padding-top:16px;padding-bottom:8px}
+.step-bar div{flex:1;height:4px;border-radius:2px;transition:all .4s}
+.recap-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(226,232,240,.15)}
+.recap-check{width:22px;height:22px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px}
+details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--txtM);font-family:var(--fs);padding:8px 0;user-select:none}
+@media(max-width:600px){
+  body{padding:12px 10px}
+  .card{padding:16px 16px}
+  h1{font-size:24px}
+  h2{font-size:19px}
+  .step-card{padding:12px 14px}
+  .nav-dot{width:30px;height:30px;font-size:12px}
+  .nav-line{width:16px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ═════════════════════════════════
+   DATA
+   ═════════════════════════════════ */
+const CODON_TABLE={UUU:"Phe",UUC:"Phe",UUA:"Leu",UUG:"Leu",CUU:"Leu",CUC:"Leu",CUA:"Leu",CUG:"Leu",AUU:"Ile",AUC:"Ile",AUA:"Ile",AUG:"Met",GUU:"Val",GUC:"Val",GUA:"Val",GUG:"Val",UCU:"Ser",UCC:"Ser",UCA:"Ser",UCG:"Ser",CCU:"Pro",CCC:"Pro",CCA:"Pro",CCG:"Pro",ACU:"Thr",ACC:"Thr",ACA:"Thr",ACG:"Thr",GCU:"Ala",GCC:"Ala",GCA:"Ala",GCG:"Ala",UAU:"Tyr",UAC:"Tyr",UAA:"STOP",UAG:"STOP",UGU:"Cys",UGC:"Cys",UGA:"STOP",UGG:"Trp",CGU:"Arg",CGC:"Arg",CGA:"Arg",CGG:"Arg",AGU:"Ser",AGC:"Ser",AGA:"Arg",AGG:"Arg",GGU:"Gly",GGC:"Gly",GGA:"Gly",GGG:"Gly",CAU:"His",CAC:"His",CAA:"Gln",CAG:"Gln",AAU:"Asn",AAC:"Asn",AAA:"Lys",AAG:"Lys",GAU:"Asp",GAC:"Asp",GAA:"Glu",GAG:"Glu"};
+const AF={Met:"Metionina",Phe:"Fenilalanina",Leu:"Leucina",Ile:"Isoleucina",Val:"Valina",Ser:"Serina",Pro:"Prolina",Thr:"Treonina",Ala:"Alanina",Tyr:"Tirosina",Cys:"Cisteina",Trp:"Triptofano",Arg:"Arginina",Gly:"Glicina",His:"Istidina",Gln:"Glutammina",Asn:"Asparagina",Lys:"Lisina",Asp:"Ac.Aspartico",Glu:"Ac.Glutammico",STOP:"STOP"};
+const AC={Met:"#d97706",Phe:"#7c3aed",Leu:"#4f46e5",Ile:"#6366f1",Val:"#7c3aed",Ser:"#059669",Pro:"#db2777",Thr:"#0d9488",Ala:"#65a30d",Tyr:"#9333ea",Cys:"#ca8a04",Trp:"#c026d3",Arg:"#2563eb",Gly:"#64748b",His:"#ea580c",Gln:"#16a34a",Asn:"#0284c7",Lys:"#dc2626",Asp:"#e11d48",Glu:"#be123c",STOP:"#6b7280"};
+const BC={A:"#16a34a",T:"#dc2626",G:"#2563eb",C:"#ca8a04",U:"#9333ea"};
+
+const SCHEDE=[
+{title:"Il Caso di Marco",steps:[
+{concept:"Marco ha 12 anni. Un giorno si sente sempre stanco, ha molta sete e deve andare in bagno molto spesso. Il medico gli diagnostica il diabete di tipo 1: il suo corpo non riesce a produrre abbastanza insulina.",example:"Le tue cellule sono come stanze chiuse a chiave. Il glucosio (lo zucchero) bussa alla porta, ma senza la chiave giusta — l\u2019insulina — non riesce a entrare per darti energia.",visual:"key_lock",check:{q:"A cosa serve l\u2019insulina?",opts:["Permette al glucosio di entrare nelle cellule","Produce energia direttamente nel sangue"],ans:0,fb:"Esatto! L\u2019insulina \u00e8 la \"chiave\" che apre le cellule al glucosio."}},
+{concept:"L\u2019insulina \u00e8 una proteina \u2014 una molecola costruita dal corpo con istruzioni precise. Nel corpo ci sono migliaia di proteine diverse, ognuna con un compito specifico.",example:"Le proteine sono come attrezzi specializzati: un cacciavite, una pinza, una chiave inglese. Ogni attrezzo ha una forma unica per fare un lavoro preciso. L\u2019insulina \u00e8 la \"chiave\" perfetta per le cellule.",visual:"tools",check:{q:"L\u2019insulina \u00e8:",opts:["Una proteina","Un gene"],ans:0,fb:"Giusto! L\u2019insulina \u00e8 una delle migliaia di proteine che il corpo costruisce."}},
+{concept:"Ma come fa il corpo a costruire una proteina cos\u00ec precisa? Le istruzioni sono scritte nel DNA, dentro il nucleo delle cellule. Il percorso dal DNA alla proteina si chiama sintesi proteica.",example:"Per montare un mobile IKEA servono: il manuale di istruzioni (DNA), qualcuno che legga e porti i pezzi (mRNA), e un banco di lavoro che monti tutto (ribosoma). La cellula fa esattamente questo!",visual:"ikea",check:{q:"Le istruzioni per costruire le proteine sono scritte nel:",opts:["DNA","Sangue"],ans:0,fb:"Perfetto! Il DNA \u00e8 il manuale di istruzioni di tutte le proteine del corpo."}}
+]},
+{title:"Il DNA: il libro delle ricette",steps:[
+{concept:"Dentro il nucleo di ogni cellula c\u2019\u00e8 il DNA: una lunghissima molecola che contiene tutte le istruzioni per costruire le proteine del tuo corpo. Il nucleo lo custodisce e lo protegge.",example:"Il nucleo \u00e8 come la cassaforte di un ristorante stellato: dentro c\u2019\u00e8 il ricettario originale con tutte le ricette. Nessuno lo porta in cucina \u2014 \u00e8 troppo prezioso!",visual:"safe",check:{q:"Dove si trova il DNA?",opts:["Nel nucleo della cellula","Sparso nel citoplasma"],ans:0,fb:"Esatto! Il DNA resta protetto nel nucleo, come un ricettario in cassaforte."}},
+{concept:"Il DNA \u00e8 scritto con sole 4 \"lettere\", chiamate basi azotate: Adenina (A), Timina (T), Guanina (G) e Citosina (C). Queste 4 lettere bastano a scrivere tutte le istruzioni.",example:"Con le 21 lettere dell\u2019alfabeto italiano scriviamo migliaia di parole diverse. Il DNA fa lo stesso: con solo 4 lettere scrive migliaia di \"ricette\" diverse!",visual:"bases",check:{q:"Quante basi azotate diverse ha il DNA?",opts:["4 (A, T, G, C)","20"],ans:0,fb:"Perfetto! Solo 4 lettere bastano per scrivere tutto il codice della vita."}},
+{concept:"Le combinazioni di queste 4 lettere formano circa 20.000 geni diversi. Ogni gene \u00e8 la ricetta per costruire una proteina specifica.",example:"Pensa a Spotify: con sole 12 note musicali si compongono milioni di canzoni. Allo stesso modo, con 4 basi il DNA \"compone\" 20.000 ricette diverse!",visual:null,check:{q:"Il DNA umano contiene le istruzioni per circa:",opts:["20.000 proteine diverse","4 proteine diverse"],ans:0,fb:"Giusto! 20.000 proteine diverse, ognuna con un compito specifico nel corpo."}}
+]},
+{title:"Perch\u00e9 serve l\u2019mRNA?",steps:[
+{concept:"Il DNA \u00e8 troppo importante per uscire dal nucleo: rischia di danneggiarsi. Allora la cellula usa un trucco: crea una copia della singola ricetta che le serve in quel momento.",example:"Quando devi cucinare una ricetta, non porti il ricettario al fornello \u2014 potresti macchiarlo! Fai una foto con il telefono e usi quella in cucina. La cellula fa lo stesso.",visual:"photocopy",check:{q:"Perch\u00e9 il DNA non esce dal nucleo?",opts:["\u00c8 troppo prezioso, potrebbe danneggiarsi","\u00c8 troppo grande per uscire"],ans:0,fb:"Esatto! Il DNA resta al sicuro nel nucleo, come l\u2019originale di un libro prezioso."}},
+{concept:"Questa copia si chiama mRNA \u2014 RNA messaggero. L\u2019mRNA copia solo il gene che serve e lo porta fuori dal nucleo, nel citoplasma, dove verr\u00e0 letto per costruire la proteina.",example:"L\u2019mRNA \u00e8 come un messaggio vocale: registra solo l\u2019informazione che serve e la porta dove serve, senza spostare la persona che parla (il DNA).",visual:null,check:{q:"L\u2019mRNA copia:",opts:["Una singola ricetta (gene) dal DNA","L\u2019intero DNA completo"],ans:0,fb:"Perfetto! L\u2019mRNA \u00e8 una copia mirata: solo il gene che serve in quel momento."}},
+{concept:"C\u2019\u00e8 una differenza importante: nell\u2019mRNA la Timina (T) viene sostituita dall\u2019Uracile (U). Per il resto le regole di lettura sono identiche.",example:"\u00c8 come se nella fotocopia ogni lettera \u2018T\u2019 venisse stampata come \u2018U\u2019. La parola cambia aspetto, ma il significato resta identico!",visual:"t_to_u",check:{q:"Nell\u2019mRNA, quale base sostituisce la Timina?",opts:["Uracile (U)","Adenina (A)"],ans:0,fb:"Giusto! T nel DNA diventa U nell\u2019mRNA. Unica differenza."}}
+]},
+{title:"La Trascrizione",steps:[
+{concept:"Il processo di copiatura dal DNA all\u2019mRNA si chiama trascrizione. Un enzima speciale \u2014 l\u2019RNA polimerasi \u2014 scorre lungo il DNA e costruisce l\u2019mRNA una base alla volta.",example:"L\u2019RNA polimerasi \u00e8 come uno scanner: scorre lungo il foglio (DNA) e produce una copia digitale (mRNA) in tempo reale, lettera per lettera, senza mai sbagliare.",visual:null,check:{q:"La trascrizione \u00e8 il processo che:",opts:["Copia il DNA in mRNA","Costruisce le proteine dagli amminoacidi"],ans:0,fb:"Esatto! Trascrizione = DNA \u2192 mRNA. Come fare una fotocopia della ricetta."}},
+{concept:"Le regole di copiatura sono fisse: ogni base del DNA ha una e una sola base complementare nell\u2019mRNA. Adenina \u2192 Uracile, Timina \u2192 Adenina, Guanina \u2192 Citosina, Citosina \u2192 Guanina.",example:"Ogni base ha il suo partner fisso, come in un ballo di coppia: A balla sempre con U, T con A, G con C, C con G. Non possono mai scambiarsi!",visual:"pairing",check:{q:"Se nel DNA c\u2019\u00e8 una A, nell\u2019mRNA si scrive:",opts:["U (Uracile)","T (Timina)"],ans:0,fb:"Perfetto! A\u2192U. La Timina esiste solo nel DNA, nell\u2019mRNA c\u2019\u00e8 l\u2019Uracile."}},
+{concept:"Esempio fondamentale: il filamento DNA con le basi T-A-C viene trascritto come A-U-G nell\u2019mRNA. Il codone AUG \u00e8 importantissimo: \u00e8 il segnale di START.",example:"AUG \u00e8 come il pulsante PLAY di un video: senza premerlo non succede nulla. Ogni proteina del corpo inizia quando il macchinario cellulare legge AUG.",visual:"transcription",check:{q:"Il filamento DNA \u2018TAC\u2019 diventa nell\u2019mRNA:",opts:["AUG (il codone di START)","TAC (resta uguale)"],ans:0,fb:"Esatto! T\u2192A, A\u2192U, C\u2192G = AUG. Il segnale di inizio di ogni proteina!"}}
+]},
+{title:"Il Ribosoma legge a triplette",steps:[
+{concept:"L\u2019mRNA esce dal nucleo e raggiunge il ribosoma \u2014 la \"macchina\" cellulare che legge le istruzioni e costruisce la proteina pezzo per pezzo.",example:"Il ribosoma \u00e8 come una stampante 3D: riceve un file digitale (l\u2019mRNA) e produce un oggetto fisico (la proteina), strato dopo strato, pezzo dopo pezzo.",visual:null,check:{q:"Il ribosoma:",opts:["Legge l\u2019mRNA e costruisce la proteina","Conserva il DNA nel nucleo"],ans:0,fb:"Giusto! Il ribosoma \u00e8 la macchina che trasforma le istruzioni in proteina."}},
+{concept:"Il ribosoma non legge una base alla volta: legge a gruppi di 3 basi. Ogni gruppo di 3 si chiama codone (o tripletta). Ogni codone \u00e8 un\u2019istruzione precisa.",example:"\u00c8 come leggere parole di 3 lettere: \u2018AUG\u2019 \u00e8 una parola, \u2018GCU\u2019 \u00e8 un\u2019altra, \u2018UUU\u2019 un\u2019altra ancora. Ogni parola-codone indica un mattoncino diverso da aggiungere!",visual:"codons",check:{q:"Quante basi compongono un codone?",opts:["3 basi","1 base"],ans:0,fb:"Esatto! 3 basi = 1 codone = 1 istruzione per il ribosoma."}},
+{concept:"Con 4 basi raggruppate a 3 a 3, le combinazioni possibili sono 4 \u00d7 4 \u00d7 4 = 64 codoni diversi. Bastano per codificare tutti i 20 amminoacidi pi\u00f9 i segnali di STOP.",example:"Un lucchetto a combinazione con 3 rotelle e 4 numeri su ogni rotella ha 4\u00d74\u00d74 = 64 combinazioni possibili. Il codice genetico funziona con la stessa logica!",visual:"padlock",check:{q:"I codoni possibili con 4 basi a gruppi di 3 sono:",opts:["64","12"],ans:0,fb:"Perfetto! 4\u00d74\u00d74 = 64 codoni."}}
+]},
+{title:"Da codone ad amminoacido",steps:[
+{concept:"Ogni codone corrisponde a un amminoacido \u2014 un \"mattoncino\" molecolare. Gli amminoacidi sono 20, ognuno con propriet\u00e0 chimiche diverse, e sono i pezzi con cui si costruiscono tutte le proteine.",example:"Il codone \u00e8 come un codice a barre al supermercato: ogni codice identifica un prodotto preciso. AUG \u2192 Metionina, GCU \u2192 Alanina, UUU \u2192 Fenilalanina...",visual:"amino",check:{q:"Ogni codone corrisponde a:",opts:["Un amminoacido specifico (un mattoncino)","Una base azotata"],ans:0,fb:"Giusto! 1 codone = 1 amminoacido."}},
+{concept:"Dato che i codoni sono 64 ma gli amminoacidi solo 20, pi\u00f9 codoni diversi possono indicare lo stesso amminoacido. Questo si chiama ridondanza del codice genetico \u2014 ed \u00e8 una protezione dagli errori!",example:"\u00c8 come avere 3 telecomandi diversi che cambiano tutti lo stesso canale della TV. Se uno si rompe o fa un errore, gli altri funzionano comunque!",visual:"redundancy",check:{q:"Il codice genetico \u00e8 ridondante perch\u00e9:",opts:["Pi\u00f9 codoni diversi possono indicare lo stesso amminoacido","Ogni codone indica pi\u00f9 amminoacidi contemporaneamente"],ans:0,fb:"Esatto! GCU, GCC, GCA, GCG \u2192 tutti Alanina. Rete di sicurezza naturale!"}},
+{concept:"Il codone AUG \u00e8 speciale: \u00e8 il segnale di START e codifica la Metionina. I codoni UAA, UAG e UGA sono segnali di STOP: fermano la costruzione.",example:"AUG \u00e8 il semaforo verde: \"Vai, inizia!\" UAA, UAG, UGA sono semafori rossi: \"Alt, fermati!\" Senza questi segnali, il ribosoma non saprebbe quando partire o fermarsi.",visual:"traffic",check:{q:"I codoni UAA, UAG e UGA sono:",opts:["Segnali di STOP (fermano la costruzione)","Codoni per amminoacidi speciali"],ans:0,fb:"Perfetto! Sono semafori rossi: non codificano nessun amminoacido, fermano la sintesi."}}
+]},
+{title:"La proteina prende forma",steps:[
+{concept:"Il ribosoma scorre lungo l\u2019mRNA e legge un codone alla volta. Per ogni codone aggiunge alla catena l\u2019amminoacido corrispondente. La catena cresce un pezzo alla volta.",example:"\u00c8 come infilare perline su una collana: il ribosoma prende una perlina (amminoacido) alla volta e la aggiunge al filo, nell\u2019ordine preciso dettato dall\u2019mRNA.",visual:"chain",check:{q:"Il ribosoma costruisce la proteina:",opts:["Un amminoacido alla volta, in ordine","Tutti gli amminoacidi insieme, in una volta"],ans:0,fb:"Esatto! Uno alla volta, in sequenza. L\u2019ordine \u00e8 fondamentale!"}},
+{concept:"Quando il ribosoma incontra un codone STOP (UAA, UAG o UGA), si stacca dall\u2019mRNA e rilascia la catena proteica completata. La sintesi \u00e8 finita!",example:"Il codone STOP \u00e8 come il punto alla fine di una frase: dice \"la proteina \u00e8 finita, non aggiungere altro!\" Senza il punto, il ribosoma continuerebbe all\u2019infinito.",visual:null,check:{q:"Quando il ribosoma incontra un codone STOP:",opts:["Si ferma e rilascia la proteina completata","Aggiunge un amminoacido speciale STOP"],ans:0,fb:"Giusto! Il ribosoma si stacca e la catena \u00e8 completa."}},
+{concept:"La catena poi si piega spontaneamente in una forma tridimensionale precisa. Ed \u00e8 proprio questa forma a determinare la funzione della proteina.",example:"Una catena stesa \u00e8 solo un filo. Ma quando si piega nella forma giusta diventa una chiave specifica. L\u2019insulina si piega nella forma che \"apre\" le cellule \u2014 ecco perch\u00e9 Marco ne ha bisogno!",visual:"folding",check:{q:"Cosa determina la funzione di una proteina?",opts:["La sua forma tridimensionale","Il numero totale di amminoacidi"],ans:0,fb:"Perfetto! La forma 3D \u00e8 tutto. Forma giusta = proteina funzionante."}}
+]}
+];
+
+const CHALS=[
+{title:"La mutazione silenziosa",scenario:"Un ricercatore confronta due campioni di DNA.\nCampione A (filamento letto): TAC\u00b7GCA\u00b7AAA\nCampione B (filamento letto): TAC\u00b7GCC\u00b7AAA\nUna base \u00e8 diversa nel secondo codone (A\u2192C).",q:"La proteina prodotta dai due campioni sar\u00e0 diversa?",hint:"Trascrivi entrambe in mRNA: GCA\u2192CGU, GCC\u2192CGG. Cerca entrambi nella tabella...",opts:["S\u00ec, cambia completamente","S\u00ec, un amminoacido viene sostituito","No, la proteina resta identica","La sintesi si blocca"],ans:2,expl:"Entrambe producono Met\u2013Arg\u2013Phe. CGU e CGG codificano entrambi Arginina! Mutazione silenziosa."},
+{title:"Lo STOP prematuro",scenario:"Sequenza mRNA: AUG \u00b7 UAU \u00b7 UAA \u00b7 GCU\nRisultato: solo Met\u2013Tyr (2 amminoacidi). Perch\u00e9 cos\u00ec corta?",q:"Perch\u00e9 la proteina \u00e8 cos\u00ec corta?",hint:"Leggi i codoni: AUG, UAU, UAA, GCU. Cosa c\u2019\u00e8 di speciale nel terzo?",opts:["La sequenza \u00e8 troppo corta","C\u2019\u00e8 un codone STOP (UAA) nella terza posizione","I codoni sono al contrario","Mancano amminoacidi"],ans:1,expl:"UAA \u00e8 STOP! Il ribosoma si ferma l\u00ec. Uno STOP prematuro causa proteine non funzionanti."},
+{title:"Due strade, stessa meta",scenario:"A: AUG\u00b7GCU\u00b7UUU\u00b7UAA \u2192 Met\u2013Ala\u2013Phe\nB: AUG\u00b7GCC\u00b7UUC\u00b7UAG \u2192 Met\u2013Ala\u2013Phe\nSequenze diverse, stessa proteina.",q:"Come \u00e8 possibile?",hint:"GCU vs GCC, UUU vs UUC, UAA vs UAG...",opts:["\u00c8 un errore","Il codice \u00e8 ridondante: pi\u00f9 codoni \u2192 stesso amminoacido","Proteine con stesso nome ma diversa forma","Codoni letti al contrario"],ans:1,expl:"GCU e GCC \u2192 Alanina. UUU e UUC \u2192 Fenilalanina. Ridondanza = rete di sicurezza!"},
+{title:"Torniamo da Marco",scenario:"Nel gene dell\u2019insulina di Marco, un codone per Leucina (CUA) \u00e8 diventato un codone STOP (UAA) a met\u00e0 della sequenza.",q:"Che effetto avr\u00e0 questa mutazione?",hint:"Cosa succede se il ribosoma incontra uno STOP prima del previsto?",opts:["Insulina prodotta normalmente","Insulina con un amminoacido diverso","Insulina incompleta e non funzionante","Il DNA si ripara da solo"],ans:2,expl:"Ribosoma si ferma troppo presto: insulina incompleta. Ecco perch\u00e9 Marco assume insulina sintetica!"}
+];
+
+const SIM_PRESETS=[{name:"Insulina (frammento)",dna:"TACGAAGACCACGCGATT"},{name:"Emoglobina (inizio)",dna:"TACCACGTAGACTGAATT"},{name:"Sequenza breve",dna:"TACAAACGTCGAACT"}];
+
+/* ═════════════════════════════════
+   HELPERS
+   ═════════════════════════════════ */
+function d2m(d){const m={A:"U",T:"A",G:"C",C:"G"};return d.split("").map(b=>m[b]||"").join("");}
+function m2p(mr){const co=[],am=[];for(let i=0;i<=mr.length-3;i+=3){const c=mr.substring(i,i+3),a=CODON_TABLE[c]||"???";co.push(c);am.push(a);if(a==="STOP")break;}return{codons:co,aminos:am};}
+function base(b,sz=28,dim=false,glow=false){const c=BC[b]||"#94a3b8";return `<span class="base" style="width:${sz}px;height:${sz}px;font-size:${sz*.44}px;background:${dim?c+'40':c};${glow?'box-shadow:0 0 10px '+c+'55;':''}">${b}</span>`;}
+function amino(a,sz=38){const c=AC[a]||"#64748b";const bg=a==="STOP"?"repeating-conic-gradient(#94a3b8 0% 25%,#cbd5e1 0% 50%)":c;return `<div class="amino"><div class="amino-circle" style="width:${sz}px;height:${sz}px;background:${bg};font-size:${Math.max(9,sz*.23)}px">${a}</div><span class="amino-label">${AF[a]||a}</span></div>`;}
+
+/* ═════════════════════════════════
+   VISUALS
+   ═════════════════════════════════ */
+const VIS={
+key_lock:`<div style="display:flex;align-items:center;justify-content:center;gap:16px">
+  <div style="text-align:center"><svg width="48" height="48" viewBox="0 0 48 48"><rect x="4" y="20" width="40" height="24" rx="4" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/><circle cx="24" cy="32" r="4" fill="#94a3b8"/><rect x="16" y="8" width="16" height="16" rx="8" fill="none" stroke="#94a3b8" stroke-width="2.5"/></svg><div style="font-size:10px;color:var(--txtL)">Cellula chiusa</div></div>
+  <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 12h16M16 6l6 6-6 6" stroke="var(--amber)" stroke-width="2" fill="none"/></svg>
+  <div style="text-align:center"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M24 8v6M30 12l-6 8-6-8" stroke="var(--amber)" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="24" cy="8" r="3" fill="var(--amber)"/></svg><div style="font-size:10px;color:var(--amber);font-weight:600">Insulina (chiave)</div></div></div>`,
+tools:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{n:"Insulina",c:"var(--amber)",s:"Apre le cellule"},{n:"Emoglobina",c:"var(--err)",s:"Trasporta O\u2082"},{n:"Cheratina",c:"var(--teal)",s:"Forma i capelli"}].map(p=>`<div style="padding:8px 14px;background:${p.c}11;border:1.5px solid ${p.c}44;border-radius:8px;text-align:center"><div style="font-size:12px;font-weight:700;color:${p.c}">${p.n}</div><div style="font-size:10px;color:var(--txtM)">${p.s}</div></div>`).join("")}</div>`,
+ikea:`<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">${[{l:"Istruzioni",s:"DNA",c:"var(--pri)"},{l:"Messaggero",s:"mRNA",c:"#7c3aed"},{l:"Montaggio",s:"Ribosoma",c:"var(--teal)"}].map((x,i)=>`<div style="display:flex;align-items:center;gap:8px"><div style="padding:10px 14px;background:${x.c}11;border:1.5px solid ${x.c}33;border-radius:8px;text-align:center;min-width:80px"><div style="font-size:13px;font-weight:700;color:${x.c}">${x.l}</div><div style="font-size:11px;color:var(--txtM);font-family:var(--fm)">${x.s}</div></div>${i<2?'<svg width="20" height="16" viewBox="0 0 20 16"><path d="M2 8h14M14 3l4 5-4 5" stroke="var(--txtL)" stroke-width="1.5" fill="none"/></svg>':''}</div>`).join("")}</div>`,
+safe:`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div style="width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#eff6ff);border:2px solid #93c5fd;display:flex;flex-direction:column;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="8" width="20" height="16" rx="3" fill="var(--pri)" opacity=".2" stroke="var(--pri)" stroke-width="1.5"/><circle cx="14" cy="16" r="3" fill="var(--pri)"/><rect x="10" y="2" width="8" height="8" rx="4" fill="none" stroke="var(--pri)" stroke-width="1.5"/></svg><span style="font-size:9px;font-weight:600;color:var(--pri)">NUCLEO</span></div><div style="font-size:11px;color:var(--txtM);max-width:140px;line-height:1.5">Il DNA resta sempre qui dentro, al sicuro</div></div>`,
+bases:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{l:"A",n:"Adenina",c:BC.A},{l:"T",n:"Timina",c:BC.T},{l:"G",n:"Guanina",c:BC.G},{l:"C",n:"Citosina",c:BC.C}].map(b=>`<div style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 14px;background:${b.c}11;border-radius:8px;border:2px solid ${b.c}44;min-width:70px"><div style="width:36px;height:36px;border-radius:8px;background:${b.c};display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:18px;font-weight:700;color:#fff">${b.l}</div><span style="font-size:11px;font-weight:600;color:${b.c}">${b.n}</span></div>`).join("")}</div>`,
+photocopy:`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div style="padding:10px 16px;background:#dbeafe;border-radius:8px;border:2px solid #93c5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:var(--pri)">DNA</div><div style="font-size:9px;color:var(--txtM)">Originale</div></div><svg width="36" height="20" viewBox="0 0 36 20"><path d="M4 10h24" stroke="var(--pri)" stroke-width="2"/><path d="M24 4l6 6-6 6" stroke="var(--pri)" stroke-width="2" fill="none"/></svg><div style="padding:10px 16px;background:#f3e8ff;border-radius:8px;border:2px solid #c4b5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:#7c3aed">mRNA</div><div style="font-size:9px;color:var(--txtM)">Copia</div></div></div>`,
+t_to_u:`<div style="display:flex;gap:8px;align-items:center;justify-content:center"><span style="font-size:11px;color:var(--txtM)">Nel DNA:</span>${base("T",30)}<svg width="28" height="16" viewBox="0 0 28 16"><path d="M4 8h18M18 3l5 5-5 5" stroke="var(--txtL)" stroke-width="1.5" fill="none"/></svg><span style="font-size:11px;color:var(--txtM)">Nell'mRNA:</span>${base("U",30)}</div>`,
+pairing:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{d:"A",r:"U"},{d:"T",r:"A"},{d:"G",r:"C"},{d:"C",r:"G"}].map(p=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)">${base(p.d,26)}<span style="font-size:10px;color:var(--txtL)">\u2193</span>${base(p.r,26,false,true)}<span style="font-size:9px;color:var(--txtL)">DNA\u2192mRNA</span></div>`).join("")}</div>`,
+transcription:`<div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="display:flex;gap:4px;align-items:center"><span style="font-size:10px;color:var(--txtL);width:50px;text-align:right">DNA</span>${["T","A","C"].map(b=>base(b,34)).join("")}</div><div style="display:flex;gap:4px;margin-left:54px">${[0,1,2].map(()=>`<span style="width:34px;text-align:center;color:var(--txtL);font-size:13px;font-family:var(--fm)">\u2193</span>`).join("")}</div><div style="display:flex;gap:4px;align-items:center"><span style="font-size:10px;color:var(--txtL);width:50px;text-align:right">mRNA</span>${["A","U","G"].map(b=>base(b,34,false,true)).join("")}</div><div style="margin-top:4px;padding:5px 12px;background:var(--okLt);border-radius:6px;font-size:11px;font-weight:600;color:var(--ok)">AUG = START</div></div>`,
+codons:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{c:"AUG",a:"Met"},{c:"GCU",a:"Ala"},{c:"UUU",a:"Phe"}].map(x=>`<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;border-radius:8px;background:${AC[x.a]}11;border:1.5px solid ${AC[x.a]}44"><div style="display:flex;gap:2px">${x.c.split("").map(b=>base(b,24)).join("")}</div><svg width="14" height="10" viewBox="0 0 14 10"><path d="M7 1v5M4 4l3 4 3-4" stroke="${AC[x.a]}" stroke-width="1.5" fill="none"/></svg>${amino(x.a,34)}</div>`).join("")}</div>`,
+padlock:`<div style="display:flex;align-items:center;justify-content:center;gap:10px">${[0,1,2].map((r,i)=>`<div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:8px;background:var(--priLt);border:1.5px solid #93c5fd;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:14px;font-weight:700;color:var(--pri)">4</div>${i<2?'<span style="font-size:14px;color:var(--txtL);font-weight:700">\u00d7</span>':''}</div>`).join("")}<span style="font-size:14px;color:var(--txtL);font-weight:700">=</span><div style="padding:8px 14px;background:var(--okLt);border-radius:8px;font-family:var(--fm);font-size:18px;font-weight:700;color:var(--ok)">64</div></div>`,
+amino:`<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">${[{cs:["GCU","GCC","GCA","GCG"],a:"Ala"},{cs:["AUG"],a:"Met"},{cs:["UAA","UAG","UGA"],a:"STOP"}].map(e=>`<div style="padding:8px 12px;border-radius:8px;background:#f8fafc;border:1px solid var(--border);text-align:center">${amino(e.a,32)}<div style="display:flex;gap:3px;margin-top:4px;justify-content:center;flex-wrap:wrap">${e.cs.map(c=>`<span style="font-size:10px;font-family:var(--fm);font-weight:600;color:var(--txtM);padding:2px 5px;background:#e2e8f0;border-radius:4px">${c}</span>`).join("")}</div></div>`).join("")}</div>`,
+redundancy:`<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${["GCU","GCC","GCA","GCG"].map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:6px;background:#f0fdf4;border:1px solid #bbf7d0"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:#7c3aed">${c}</span><span style="font-size:10px;font-weight:700;color:var(--ok)">Ala</span></div>`).join("")}<div style="display:flex;align-items:center;padding:0 8px;font-size:11px;color:var(--ok);font-weight:600">Stesso risultato!</div></div>`,
+traffic:`<div style="display:flex;gap:16px;justify-content:center;align-items:flex-end"><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 0 12px #16a34a44">GO</div><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--ok)">AUG</span><span style="font-size:9px;color:var(--txtL)">START</span></div>${["UAA","UAG","UGA"].map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:50%;background:var(--err);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 0 12px #dc262644">ALT</div><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--err)">${c}</span><span style="font-size:9px;color:var(--txtL)">STOP</span></div>`).join("")}</div>`,
+chain:`<div style="display:flex;align-items:center;justify-content:center;gap:0">${["Met","Ala","Phe"].map((a,i)=>`<div style="display:flex;align-items:center">${amino(a,38)}${i<2?'<div style="width:16px;height:3px;background:var(--pri);border-radius:2px;margin-bottom:16px"></div>':''}</div>`).join("")}<div style="width:16px;height:0;border-top:2px dashed var(--txtL);margin-bottom:16px"></div><div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:38px;height:38px;border-radius:50%;background:repeating-conic-gradient(#94a3b8 0% 25%,#cbd5e1 0% 50%);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:var(--fm)">STOP</div><span style="font-size:9px;color:var(--txtL)">Fine</span></div></div>`,
+folding:`<div style="display:flex;align-items:center;justify-content:center;gap:16px"><div style="text-align:center"><div style="display:flex;gap:2px;justify-content:center">${["Met","Ala","Phe"].map(a=>`<div style="width:24px;height:24px;border-radius:50%;background:${AC[a]};display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;font-family:var(--fm)">${a}</div>`).join("")}</div><span style="font-size:9px;color:var(--txtL)">Catena stesa</span></div><svg width="28" height="16" viewBox="0 0 28 16"><path d="M4 8h18M18 3l5 5-5 5" stroke="var(--amber)" stroke-width="2" fill="none"/></svg><div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,${AC.Met},${AC.Ala},${AC.Phe});display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 4px 12px rgba(0,0,0,.15)">3D</div><span style="font-size:9px;color:var(--amber);font-weight:600">Forma funzionale</span></div></div>`
+};
+
+/* ═════════════════════════════════
+   STATE
+   ═════════════════════════════════ */
+const S={
+  phase:0,maxP:0,
+  si:0,sti:0,sub:0,sel:null,wrong:false,
+  simPi:2,simCust:"",simStep:0,simPlay:false,simSpd:500,
+  chi:0,chSel:null,chSub:false,chHint:false,chScore:0,
+  cScore:0
+};
+let simTimer=null;
+
+function go(p){S.phase=p;S.maxP=Math.max(S.maxP,p);render();}
+
+/* ═════════════════════════════════
+   RENDER
+   ═════════════════════════════════ */
+function render(){
+  const el=document.getElementById("app");
+  el.innerHTML=`
+    <div style="text-align:center;margin-bottom:8px">
+      <h1>La Sintesi Proteica</h1>
+      <p style="font-size:13px;color:var(--txtL);letter-spacing:.5px">Dal DNA alla proteina \u2014 un viaggio dentro la cellula</p>
+    </div>
+    ${renderNav()}
+    ${S.phase===0?renderWelcome():""}
+    ${S.phase===1?renderGuided():""}
+    ${S.phase===2?renderSim():""}
+    ${S.phase===3?renderChallenge():""}
+    ${S.phase===4?renderBadge():""}
+  `;
+  if(S.phase===1){const b=document.getElementById("btm");if(b)setTimeout(()=>b.scrollIntoView({behavior:"smooth",block:"end"}),120);}
+}
+
+function renderNav(){
+  const ps=[{l:"Problema",i:"?"},{l:"Esplora",i:"1"},{l:"Simula",i:"2"},{l:"Sfida",i:"3"},{l:"Traguardo",i:"\u2605"}];
+  return `<div class="nav-phases">${ps.map((p,i)=>{
+    const done=i<S.phase,cur=i===S.phase,lock=i>S.maxP;
+    return `<div style="display:flex;align-items:center">
+      <button onclick="${lock?'':`go(${i})`}" style="display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:${lock?'default':'pointer'};opacity:${lock?.3:1};padding:4px 8px">
+        <div class="nav-dot" style="background:${done?'var(--ok)':cur?'var(--pri)':'#e2e8f0'};color:${done||cur?'#fff':'var(--txtL)'};${cur?'box-shadow:0 0 0 3px #1e40af33;':''}">${done?'\u2713':p.i}</div>
+        <span style="font-size:10px;font-weight:${cur?700:500};color:${cur?'var(--pri)':done?'var(--ok)':'var(--txtL)'};white-space:nowrap">${p.l}</span>
+      </button>
+      ${i<4?`<div class="nav-line" style="background:${done?'var(--ok)':'#e2e8f0'}"></div>`:''}
+    </div>`;
+  }).join("")}</div>`;
+}
+
+function renderWelcome(){
+  return `<div class="card" style="text-align:center;padding:40px 28px">
+    <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:16px"><circle cx="40" cy="40" r="38" fill="var(--priLt)" stroke="var(--pri)" stroke-width="2"/><text x="40" y="35" text-anchor="middle" font-size="11" fill="var(--pri)" font-weight="600">DNA</text><text x="40" y="48" text-anchor="middle" font-size="9" fill="var(--txtL)">\u2192 mRNA \u2192 Proteina</text></svg>
+    <h2 style="margin-bottom:8px">Come fa il corpo a costruire le proteine?</h2>
+    <p style="font-size:15px;color:var(--txtM);line-height:1.7;max-width:500px;margin:0 auto 24px">In questo percorso scoprirai il meccanismo con cui le cellule leggono il DNA e costruiscono le proteine.</p>
+    <p style="font-size:13px;color:var(--txtL);margin-bottom:24px">7 schede \u00b7 21 verifiche \u00b7 1 simulatore \u00b7 4 sfide \u00b7 circa 40 minuti</p>
+    <button class="btn btn-pri" onclick="go(1)">Inizia il percorso \u2192</button>
+  </div>`;
+}
+
+/* ═════════════════════════════════
+   GUIDED
+   ═════════════════════════════════ */
+function gAdvSub(){S.sub++;render();}
+function gCheck(){const st=SCHEDE[S.si].steps[S.sti];if(S.sel===st.check.ans){S.sub=3;S.wrong=false;}else S.wrong=true;render();}
+function gSelOpt(i){S.sel=i;S.wrong=false;render();}
+function gNext(){
+  const sch=SCHEDE[S.si];
+  if(S.sti<sch.steps.length-1){S.sti++;S.sub=0;S.sel=null;S.wrong=false;}
+  else if(S.si<SCHEDE.length-1){S.si++;S.sti=0;S.sub=0;S.sel=null;S.wrong=false;}
+  else{go(2);return;}
+  render();
+}
+
+function renderGuided(){
+  const sch=SCHEDE[S.si],step=sch.steps[S.sti],total=sch.steps.length;
+  const vis=step.visual?VIS[step.visual]:"";
+
+  let recap="";
+  if(S.sti>0){
+    recap=`<div style="background:#f8fafb;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:8px 24px">${sch.steps.slice(0,S.sti).map(s=>`<div class="recap-item"><div class="recap-check">\u2713</div><p style="font-size:13px;color:var(--txtM);line-height:1.5;margin:0">${s.concept.substring(0,90)}...</p></div>`).join("")}</div>`;
+  }
+
+  let stepBar=`<div class="step-bar">${sch.steps.map((_,i)=>`<div style="background:${i<S.sti?'var(--ok)':i===S.sti?'var(--pri)':'#e2e8f0'}"></div>`).join("")}</div>`;
+
+  let conceptCard=`<div class="step-card fade-in" style="border-left:4px solid var(--pri);background:#1e40af08">
+    <div class="step-tag" style="color:var(--pri)">Concetto</div>
+    <p style="font-size:15px;line-height:1.75;margin:0">${step.concept}</p>
+  </div>`;
+
+  let exampleCard="";
+  if(S.sub>=1){
+    exampleCard=`<div class="step-card fade-in" style="border-left:4px solid #7c3aed;background:#7c3aed08">
+      <div class="step-tag" style="color:#7c3aed">Esempio</div>
+      <p style="font-size:14px;line-height:1.7;margin:0;${vis?'margin-bottom:12px':''}">${step.example}</p>
+      ${vis?`<div style="padding:12px;background:#fafaf8;border-radius:8px;border:1px solid var(--border);margin-top:8px">${vis}</div>`:''}
+    </div>`;
+  }
+
+  let checkCard="";
+  if(S.sub>=2){
+    const ch=step.check;
+    checkCard=`<div class="step-card fade-in" style="border-left:4px solid var(--teal);background:#0f766e0a">
+      <div class="step-tag" style="color:var(--teal)">Hai capito? Verifica</div>
+      <p style="font-size:14px;font-weight:600;margin-bottom:10px">${ch.q}</p>
+      ${ch.opts.map((o,i)=>{
+        let cls="opt-btn";
+        if(S.sub>=3&&i===ch.ans)cls+=" correct";
+        else if(S.sub<3&&S.sel===i&&S.wrong)cls+=" wrong";
+        else if(S.sub<3&&S.sel===i)cls+=" selected";
+        return `<button class="${cls}" onclick="gSelOpt(${i})" ${S.sub>=3?'disabled':''}><span style="font-weight:600;margin-right:8px;color:var(--txtL)">${String.fromCharCode(65+i)}.</span>${o}</button>`;
+      }).join("")}
+      ${S.wrong&&S.sub<3?'<p style="font-size:13px;color:var(--err);margin-top:8px" class="fade-in">Riprova! Rileggi il concetto e l\u2019esempio qui sopra.</p>':''}
+      ${S.sub<3?`<div style="margin-top:10px;text-align:right"><button class="btn btn-teal" onclick="gCheck()" ${S.sel===null?'disabled':''} style="padding:8px 18px;font-size:13px">Verifica</button></div>`:''}
+    </div>`;
+  }
+
+  let feedbackCard="";
+  if(S.sub>=3){
+    const ch=step.check;
+    const isLast=S.sti>=total-1&&S.si>=SCHEDE.length-1;
+    const isLastStep=S.sti>=total-1;
+    const label=isLast?"Vai al simulatore \u2192":isLastStep?"Prossima scheda \u2192":"Prossimo passo \u2192";
+    feedbackCard=`<div class="fade-in" style="background:var(--okLt);border:1px solid #86efac;border-radius:10px;padding:14px 18px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700">\u2713</div>
+        <span style="font-size:14px;font-weight:600;color:var(--ok)">Corretto!</span>
+      </div>
+      <p style="font-size:13px;line-height:1.6;margin-bottom:10px">${ch.fb}</p>
+      <div style="text-align:right"><button class="btn btn-ok" onclick="gNext()" style="font-size:13px">${label}</button></div>
+    </div>`;
+  }
+
+  let advBtn="";
+  if(S.sub===0)advBtn=`<div style="text-align:center;margin-top:12px"><button class="btn btn-out" onclick="gAdvSub()" style="font-size:13px">Vedi l'esempio</button></div>`;
+  if(S.sub===1)advBtn=`<div style="text-align:center;margin-top:12px"><button class="btn btn-out" onclick="gAdvSub()" style="font-size:13px;border-color:var(--teal);color:var(--teal)">Ora verifica</button></div>`;
+
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:12px;color:var(--txtL)">Scheda ${S.si+1}/${SCHEDE.length} \u2014 Passo ${S.sti+1}/${total}</span>
+      <div class="progress-dots">${SCHEDE.map((_,i)=>`<span style="width:${i===S.si?18:8}px;background:${i<S.si?'var(--ok)':i===S.si?'var(--pri)':'#e2e8f0'}"></span>`).join("")}</div>
+    </div>
+    <div style="background:var(--card);border-radius:14px 14px 0 0;border:1px solid var(--border);border-bottom:none;padding:18px 24px">
+      <h2 style="margin:0">${sch.title}</h2>
+      <div style="width:36px;height:3px;background:var(--pri);border-radius:2px;margin-top:4px"></div>
+    </div>
+    ${recap}
+    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 24px 20px">
+      ${stepBar}${conceptCard}${exampleCard}${checkCard}${feedbackCard}${advBtn}
+    </div>
+    <div style="background:var(--card);border-radius:0 0 14px 14px;border:1px solid var(--border);border-top:none;height:8px"></div>
+    <div id="btm" style="height:1px"></div>
+    <div style="height:20px"></div>
+  `;
+}
+
+/* ═════════════════════════════════
+   SIMULATION
+   ═════════════════════════════════ */
+function simReset(){S.simStep=0;S.simPlay=false;clearInterval(simTimer);render();}
+function simSetPreset(i){S.simPi=i;S.simStep=0;S.simPlay=false;clearInterval(simTimer);render();}
+function simSetCust(v){S.simCust=v;S.simStep=0;S.simPlay=false;clearInterval(simTimer);render();}
+function simPlay(){
+  const dna=simDna();const mrna=d2m(dna);const{codons}=m2p(mrna);const tot=dna.length+codons.length;
+  if(!dna||dna.length<3)return;
+  if(S.simStep>=tot)S.simStep=0;
+  S.simPlay=true;
+  clearInterval(simTimer);
+  simTimer=setInterval(()=>{
+    S.simStep++;
+    if(S.simStep>=tot){S.simPlay=false;clearInterval(simTimer);}
+    render();
+  },S.simSpd);
+  render();
+}
+function simPause(){S.simPlay=false;clearInterval(simTimer);render();}
+function simStepFwd(){
+  const dna=simDna();const mrna=d2m(dna);const{codons}=m2p(mrna);const tot=dna.length+codons.length;
+  if(S.simStep<tot){S.simPlay=false;clearInterval(simTimer);S.simStep++;render();}
+}
+function simSetSpd(v){S.simSpd=1100-v;if(S.simPlay){clearInterval(simTimer);simPlay();}}
+function simDna(){return S.simPi<SIM_PRESETS.length?SIM_PRESETS[S.simPi].dna:S.simCust.toUpperCase().replace(/[^ATGC]/g,"");}
+
+function renderSim(){
+  const dna=simDna(),mrna=d2m(dna),{codons,aminos}=m2p(mrna),tot=dna.length+codons.length;
+  const valid=dna.length>=3,tc=Math.min(S.simStep,dna.length),tl=Math.max(0,S.simStep-dna.length);
+  const sp=S.simStep===0?"idle":S.simStep<=dna.length?"tr":S.simStep<tot?"tl":"done";
+
+  let presetBtns=SIM_PRESETS.map((p,i)=>`<button onclick="simSetPreset(${i})" style="padding:6px 14px;border-radius:20px;border:1.5px solid ${S.simPi===i?'var(--pri)':'#e2e8f0'};background:${S.simPi===i?'var(--priLt)':'#fff'};color:${S.simPi===i?'var(--pri)':'var(--txtM)'};font-size:12px;font-weight:600;font-family:var(--fs);cursor:pointer">${p.name}</button>`).join("");
+  presetBtns+=`<button onclick="simSetPreset(99)" style="padding:6px 14px;border-radius:20px;border:1.5px solid ${S.simPi===99?'var(--pri)':'#e2e8f0'};background:${S.simPi===99?'var(--priLt)':'#fff'};color:${S.simPi===99?'var(--pri)':'var(--txtM)'};font-size:12px;font-weight:600;font-family:var(--fs);cursor:pointer">Personalizzata</button>`;
+
+  let custInput=S.simPi>=SIM_PRESETS.length?`<input id="simCustIn" value="${S.simCust}" oninput="simSetCust(this.value)" placeholder="Scrivi il filamento stampo DNA (solo A, T, G, C)..." style="width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border);font-family:var(--fm);font-size:13px;margin-bottom:8px;background:#fafaf8">`:"";
+
+  let notMultOf3=dna.length>0&&dna.length%3!==0;
+  let noStart=mrna.length>=3&&mrna.substring(0,3)!=="AUG";
+  let statsHtml=dna.length>0?`<div style="font-size:12px;color:var(--txtM);margin-bottom:12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <span>${dna.length} basi \u2192 ${codons.length} codoni \u2192 ${aminos.filter(a=>a!=="STOP").length} amminoacidi</span>
+    ${notMultOf3?'<span style="color:var(--err);font-weight:600">La sequenza non \u00e8 multiplo di 3: le basi in eccesso verranno ignorate</span>':''}
+    ${noStart?'<span style="color:var(--amber);font-weight:600">Nota: la sequenza non inizia con TAC (codone START AUG)</span>':''}
+    ${!aminos.includes("STOP")&&dna.length>=3?'<span style="color:var(--amber)">Nessun codone STOP trovato</span>':''}
+  </div>`:"";
+
+  let dnaRow=dna.split("").map((b,i)=>base(b,26,i>=tc)).join("");
+  let mrnaRow=mrna.substring(0,tc).split("").map((b,i)=>base(b,26,false,sp==="tr"&&i>=tc-3)).join("");
+
+  let codonHtml=codons.map((c,i)=>{
+    const rd=i<tl,cur=i===tl-1&&sp==="tl",a=aminos[i],ac=AC[a]||"#64748b";
+    return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 6px 4px;border-radius:8px;transition:all .3s;background:${cur?ac+'15':'transparent'};border:2px solid ${cur?ac:'transparent'}">
+      <div style="display:flex;gap:1px">${c.split("").map(b=>base(b,22,!rd)).join("")}</div>
+      ${rd?`<span style="font-size:10px;font-weight:700;color:${ac};font-family:var(--fm)">${a==="STOP"?"\u25a0 STOP":a}</span>`:''}
+    </div>`;
+  }).join("");
+
+  let chainHtml="";
+  if(tl>0){
+    chainHtml=`<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:var(--ok);letter-spacing:1px;margin-bottom:8px">CATENA PROTEICA \u2014 ${aminos.slice(0,tl).filter(a=>a!=="STOP").length} amminoacidi</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">${aminos.slice(0,tl).map((a,i)=>`<div style="display:flex;align-items:center">${i>0&&a!=="STOP"&&aminos[i-1]!=="STOP"?'<div style="width:14px;height:3px;background:var(--pri);border-radius:2px;margin-bottom:16px"></div>':''}${amino(a,38)}</div>`).join("")}</div></div>`;
+  }
+
+  let doneHtml=sp==="done"?`<div style="margin-top:16px;padding:16px;background:var(--okLt);border-radius:10px;border:1px solid #86efac">
+    <p style="font-size:14px;font-weight:600;color:var(--ok);margin-bottom:6px">Sintesi completata!</p>
+    <p style="font-size:13px;color:var(--txt);margin-bottom:4px"><strong>Proteina:</strong> ${aminos.filter(a=>a!=="STOP").map(a=>AF[a]).join(" \u2192 ")}</p>
+    <p style="font-size:12px;color:var(--txtM)"><strong>${aminos.filter(a=>a!=="STOP").length}</strong> amminoacidi legati in catena. ${aminos.includes("STOP")?"Il codone STOP ha terminato correttamente la sintesi.":"Attenzione: nessun codone STOP trovato \u2014 nella cellula reale questo causerebbe problemi."}</p>
+  </div>`:"";
+
+  return `<div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div><h2 style="margin-bottom:4px">Simulatore</h2><p style="font-size:13px;color:var(--txtM)">Scegli una sequenza e osserva il processo.</p></div>
+      <button class="btn btn-out" onclick="go(3)" style="font-size:12px;padding:6px 16px">Vai alle sfide \u2192</button>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">${presetBtns}</div>
+    ${custInput}${statsHtml}
+    <div style="padding:10px 14px;background:#f8fafc;border-radius:8px;border:1px solid var(--border);margin-bottom:14px;font-size:12px;color:var(--txtM);line-height:1.6">
+      <strong style="color:var(--pri)">Ricorda:</strong> stai inserendo il <strong>filamento stampo</strong> del DNA (3'\u21925'). L'RNA polimerasi lo legge e costruisce l'mRNA con le basi complementari (A\u2192U, T\u2192A, G\u2192C, C\u2192G). Poi il ribosoma traduce l'mRNA in proteina, 3 basi (1 codone) alla volta.
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+      ${!S.simPlay?`<button class="btn btn-pri" onclick="simPlay()" ${!valid?'disabled':''}>${sp==="done"?"Ricomincia":sp==="idle"?"\u25b6 Avvia":"\u25b6 Riprendi"}</button>`:`<button class="btn btn-gh" onclick="simPause()">\u23f8 Pausa</button>`}
+      <button class="btn btn-gh" onclick="simStepFwd()" ${!valid||S.simStep>=tot?'disabled':''}>Passo \u2192</button>
+      <button class="btn btn-gh" onclick="simReset()">Reset</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--txtL)">Velocit\u00e0</span><input type="range" min="100" max="1000" step="50" value="${1100-S.simSpd}" oninput="simSetSpd(+this.value)" style="width:70px;accent-color:var(--pri)"></div>
+    </div>
+    <div style="padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;font-weight:600;background:${sp==="tr"?"#dbeafe":sp==="tl"?"#f3e8ff":sp==="done"?"var(--okLt)":"#f1f5f9"};color:${sp==="tr"?"var(--pri)":sp==="tl"?"#7c3aed":sp==="done"?"var(--ok)":"var(--txtL)"}">
+      <div style="display:flex;justify-content:space-between"><span>${sp==="idle"?"Pronto \u2014 premi Avvia per iniziare":sp==="tr"?"FASE 1: Trascrizione \u2014 DNA \u2192 mRNA":sp==="tl"?"FASE 2: Traduzione \u2014 mRNA \u2192 Proteina":"Sintesi completata!"}</span><span style="font-weight:400;font-size:12px">${S.simStep}/${tot}</span></div>
+      ${sp==="tr"?'<div style="font-size:11px;font-weight:400;margin-top:4px;opacity:.8">L\u2019RNA polimerasi sta copiando il DNA in mRNA, base per base</div>':''}
+      ${sp==="tl"?'<div style="font-size:11px;font-weight:400;margin-top:4px;opacity:.8">Il ribosoma legge i codoni (triplette) e aggiunge gli amminoacidi alla catena</div>':''}
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;color:var(--pri);letter-spacing:1px;margin-bottom:8px">TRASCRIZIONE</div>
+      <div style="display:flex;align-items:flex-start;gap:6px;margin-bottom:4px"><span style="font-size:10px;color:var(--txtL);width:64px;text-align:right;padding-top:6px;flex-shrink:0">DNA 3'\u21925'</span><div style="display:flex;gap:2px;flex-wrap:wrap;min-height:26px">${dnaRow}</div></div>
+      <div style="display:flex;align-items:flex-start;gap:6px"><span style="font-size:10px;color:var(--txtL);width:64px;text-align:right;padding-top:6px;flex-shrink:0">mRNA 5'\u21923'</span><div style="display:flex;gap:2px;flex-wrap:wrap;min-height:26px">${mrnaRow}</div></div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:1px;margin-bottom:8px">TRADUZIONE</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${codonHtml}</div>
+    </div>
+    ${chainHtml}${doneHtml}
+  </div>
+  <details style="margin-bottom:16px"><summary>Tabella completa dei 64 codoni</summary>
+    <div class="card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:4px;padding:14px">${Object.entries(CODON_TABLE).map(([c,a])=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:4px;background:#f8fafc"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:#7c3aed">${c}</span><span style="font-size:10px;font-weight:600;color:${AC[a]}">${a}</span></div>`).join("")}</div>
+  </details>`;
+}
+
+/* ═════════════════════════════════
+   CHALLENGE
+   ═════════════════════════════════ */
+function chSelOpt(i){S.chSel=i;render();}
+function chSubmit(){if(S.chSel===null)return;S.chSub=true;if(S.chSel===CHALS[S.chi].ans)S.chScore++;render();}
+function chRetry(){S.chSel=null;S.chSub=false;render();}
+function chNext(){
+  if(S.chi<CHALS.length-1){S.chi++;S.chSel=null;S.chSub=false;S.chHint=false;render();}
+  else{S.cScore=S.chScore;go(4);}
+}
+function chShowHint(){S.chHint=true;render();}
+
+function renderChallenge(){
+  const d=CHALS[S.chi],correct=S.chSel===d.ans;
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span style="font-size:12px;color:var(--txtL)">Sfida ${S.chi+1}/${CHALS.length}</span><span style="font-size:12px;color:var(--ok);font-weight:600">Punteggio: ${S.chScore}/${CHALS.length}</span></div>
+  <div class="card">
+    <h2 style="font-size:20px;margin-bottom:4px">${d.title}</h2><div style="width:40px;height:3px;background:var(--amber);border-radius:2px;margin-bottom:16px"></div>
+    <div style="padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fde68a;margin-bottom:16px"><p style="font-size:14px;line-height:1.7;white-space:pre-line">${d.scenario}</p></div>
+    <p style="font-size:15px;font-weight:600;margin-bottom:14px">${d.q}</p>
+    ${d.opts.map((o,i)=>{
+      let cls="opt-btn";
+      if(S.chSub&&i===d.ans)cls+=" correct";
+      else if(S.chSub&&i===S.chSel&&!correct)cls+=" wrong";
+      else if(!S.chSub&&S.chSel===i)cls+=" selected";
+      return `<button class="${cls}" onclick="chSelOpt(${i})" ${S.chSub?'disabled':''}><span style="font-weight:600;margin-right:8px">${String.fromCharCode(65+i)}.</span>${o}</button>`;
+    }).join("")}
+    ${!S.chSub?`<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><button class="btn btn-pri" onclick="chSubmit()" ${S.chSel===null?'disabled':''}>Verifica</button>${!S.chHint?`<button class="btn btn-gh" onclick="chShowHint()" style="font-size:12px">Suggerimento</button>`:''}</div>`:''}
+    ${S.chHint&&!S.chSub?`<div style="margin-top:12px;padding:12px;background:#f0f9ff;border-radius:8px;border:1px solid #bae6fd;font-size:13px;color:var(--txtM);line-height:1.6">${d.hint}</div>`:''}
+    ${S.chSub?`<div style="margin-top:16px;padding:16px;border-radius:10px;background:${correct?'var(--okLt)':'#fef2f2'};border:1px solid ${correct?'#86efac':'#fca5a5'}">
+      <p style="font-size:14px;font-weight:700;color:${correct?'var(--ok)':'var(--err)'};margin-bottom:6px">${correct?"Eccellente!":"Non \u00e8 corretta."}</p>
+      ${correct?`<p style="font-size:14px;line-height:1.6">${d.expl}</p>`:'<p style="font-size:13px;color:var(--txtM)">Rileggi lo scenario e riprova!</p>'}
+      <div style="margin-top:12px;text-align:right">${correct?`<button class="btn btn-ok" onclick="chNext()">${S.chi<CHALS.length-1?"Prossima sfida \u2192":"Concludi \u2192"}</button>`:`<button class="btn btn-pri" onclick="chRetry()">Riprova</button>`}</div>
+    </div>`:''}
+  </div>`;
+}
+
+/* ═════════════════════════════════
+   BADGE
+   ═════════════════════════════════ */
+function renderBadge(){
+  return `<div class="card" style="text-align:center;padding:40px 28px">
+    <svg width="120" height="120" viewBox="0 0 120 120" style="margin-bottom:20px"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--pri)"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="url(#bg)" stroke="#c7d2fe" stroke-width="3"/><circle cx="60" cy="60" r="46" fill="none" stroke="#fff" stroke-width="1.5" opacity=".3"/><text x="60" y="46" text-anchor="middle" fill="#fff" font-family="serif" font-size="13" font-weight="600">BIOLOGO</text><text x="60" y="64" text-anchor="middle" fill="#fff" font-family="serif" font-size="12" font-weight="600">MOLECOLARE</text><text x="60" y="84" text-anchor="middle" fill="#c7d2fe" font-size="11">\u2605 \u2605 \u2605</text></svg>
+    <h2 style="font-size:26px;margin-bottom:8px">Complimenti!</h2>
+    <p style="font-size:15px;color:var(--txtM);line-height:1.7;max-width:520px;margin:0 auto 20px">Hai completato l\u2019intero percorso sulla sintesi proteica. Ecco cosa hai imparato:</p>
+
+    <div style="text-align:left;max-width:480px;margin:0 auto 24px;display:flex;flex-direction:column;gap:8px">
+      <div style="padding:10px 14px;background:var(--priLt);border-radius:8px;border-left:4px solid var(--pri);font-size:13px;line-height:1.5"><strong style="color:var(--pri)">Trascrizione:</strong> il DNA (nel nucleo) viene copiato in mRNA. Le basi si accoppiano: A\u2192U, T\u2192A, G\u2192C, C\u2192G.</div>
+      <div style="padding:10px 14px;background:#f3e8ff;border-radius:8px;border-left:4px solid #7c3aed;font-size:13px;line-height:1.5"><strong style="color:#7c3aed">Traduzione:</strong> il ribosoma legge l\u2019mRNA a triplette (codoni). Ogni codone corrisponde a un amminoacido. AUG = start, UAA/UAG/UGA = stop.</div>
+      <div style="padding:10px 14px;background:var(--okLt);border-radius:8px;border-left:4px solid var(--ok);font-size:13px;line-height:1.5"><strong style="color:var(--ok)">Proteina:</strong> gli amminoacidi si legano in catena e la catena si piega nella forma 3D che determina la sua funzione.</div>
+    </div>
+
+    <div style="padding:20px;background:var(--amberLt);border-radius:12px;border:1px solid #fde68a;max-width:480px;margin:0 auto 24px">
+      <p style="font-size:14px;font-weight:600;color:var(--amber);margin-bottom:6px">La risposta per Marco</p>
+      <p style="font-size:14px;line-height:1.7;text-align:left">Il corpo di Marco dovrebbe produrre insulina leggendo il gene corrispondente nel DNA, trascrivendolo in mRNA e traducendo i codoni in una catena di amminoacidi che, piegandosi, forma la proteina funzionante. Una mutazione nel suo DNA crea un codone STOP prematuro: l\u2019insulina risulta incompleta e non funziona. Per questo Marco assume insulina sintetica, prodotta in laboratorio leggendo la sequenza corretta del gene umano.</p>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap">
+      <div style="padding:10px 20px;background:var(--okLt);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--ok)">${S.cScore}/4</div><div style="font-size:11px;color:var(--txtM)">Sfide superate</div></div>
+      <div style="padding:10px 20px;background:var(--priLt);border-radius:8px"><div style="font-size:22px;font-weight:700;color:var(--pri)">21/21</div><div style="font-size:11px;color:var(--txtM)">Verifiche completate</div></div>
+    </div>
+    <div style="margin-top:24px"><button class="btn btn-gh" onclick="resetAll()" style="font-size:13px">Ricomincia il percorso</button></div>
+  </div>`;
+}
+
+function resetAll(){
+  S.phase=0;S.maxP=0;S.si=0;S.sti=0;S.sub=0;S.sel=null;S.wrong=false;
+  S.simPi=2;S.simCust="";S.simStep=0;S.simPlay=false;S.simSpd=500;
+  S.chi=0;S.chSel=null;S.chSub=false;S.chHint=false;S.chScore=0;S.cScore=0;
+  clearInterval(simTimer);window.scrollTo(0,0);render();
+}
+
+/* INIT */
+render();
+</script>
+</body>
+</html>
