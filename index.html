@@ -5,91 +5,92 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>La Sintesi Proteica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://www.youtube.com/iframe_api"></script>
 <style>
 :root{
-  --bg:#f4f2ee;--card:#fff;--border:#e2e8f0;
-  --pri:#1e40af;--priLt:#dbeafe;
-  --teal:#0f766e;--tealLt:#ccfbf1;
-  --amber:#d97706;--amberLt:#fef3c7;
-  --ok:#16a34a;--okLt:#dcfce7;
-  --err:#dc2626;
-  --txt:#1e293b;--txtM:#475569;--txtL:#94a3b8;
-  --grid:#e8e5df;
-  --f:'Source Serif 4','Georgia',serif;
+  --bg:#ffffff;--card:#ffffff;--border:#e8ecf0;
+  --pri:#1a5276;--priLt:#ebf5fb;
+  --teal:#0d9488;--tealLt:#f0fdfa;
+  --coral:#f97066;--coralLt:#fff1f0;
+  --amber:#c27803;--amberLt:#fef9ec;
+  --ok:#0f766e;--okLt:#f0fdfa;
+  --err:#be123c;
+  --txt:#2d3436;--txtM:#636e72;--txtL:#b2bec3;
+  --grid:transparent;
+  --f:'DM Sans','Segoe UI',sans-serif;
   --fs:'DM Sans','Segoe UI',sans-serif;
   --fm:'JetBrains Mono','Consolas',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{min-height:100vh;background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px),var(--bg);background-size:40px 40px,40px 40px,100% 100%;font-family:var(--fs);color:var(--txt);padding:20px 16px;-webkit-text-size-adjust:100%}
+body{min-height:100vh;background:var(--bg);font-family:var(--fs);color:var(--txt);padding:20px 16px;-webkit-text-size-adjust:100%}
 #app{max-width:780px;margin:0 auto}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .fade-in{animation:fadeIn .4s ease both}
-.card{background:var(--card);border-radius:14px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.04);padding:24px 28px;margin-bottom:20px}
-.btn{padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;font-family:var(--fs);cursor:pointer;transition:all .2s;border:none;display:inline-block;min-height:44px;-webkit-tap-highlight-color:transparent}
+.card{background:var(--card);border-radius:16px;border:1px solid var(--border);box-shadow:0 1px 2px rgba(0,0,0,.03);padding:28px 32px;margin-bottom:24px}
+.btn{padding:11px 24px;border-radius:10px;font-size:14px;font-weight:600;font-family:var(--fs);cursor:pointer;transition:all .2s;border:none;display:inline-block;min-height:44px;-webkit-tap-highlight-color:transparent;letter-spacing:.01em}
 .btn:hover:not(:disabled){filter:brightness(.93)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:disabled{opacity:.35;cursor:not-allowed}
 .btn-pri{background:var(--pri);color:#fff}
 .btn-ok{background:var(--ok);color:#fff}
 .btn-out{background:transparent;color:var(--pri);border:2px solid var(--pri)}
 .btn-gh{background:transparent;color:var(--txtM);border:1px solid var(--border)}
 .btn-teal{background:var(--teal);color:#fff}
-h1{font-family:var(--f);font-size:28px;font-weight:700;margin-bottom:2px}
-h2{font-family:var(--f);font-size:22px;font-weight:600}
+h1{font-family:var(--f);font-size:28px;font-weight:700;color:var(--txt);letter-spacing:-.02em;margin-bottom:2px}
+h2{font-family:var(--f);font-size:22px;font-weight:700;color:var(--txt);letter-spacing:-.01em}
 .base{display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-family:var(--fm);font-weight:700;color:#fff;transition:all .35s}
 .amino{display:flex;flex-direction:column;align-items:center;gap:2px}
 .amino-circle{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-weight:700;color:#fff;transition:all .3s}
 .amino-label{font-size:9px;color:var(--txtL);font-family:var(--fs);text-align:center;max-width:52px;line-height:1.1}
-.step-card{border-radius:0 10px 10px 0;padding:16px 18px;margin-bottom:12px}
-.step-card .step-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;font-family:var(--fs)}
-.opt-btn{text-align:left;padding:12px 14px;border-radius:8px;font-size:14px;font-family:var(--fs);cursor:pointer;transition:all .2s;width:100%;display:block;margin-bottom:8px;background:#fff;border:1px solid var(--border);color:var(--txt);min-height:44px;-webkit-tap-highlight-color:transparent}
+.step-card{border-radius:0 12px 12px 0;padding:18px 20px;margin-bottom:14px}
+.step-card .step-tag{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-family:var(--fs)}
+.opt-btn{text-align:left;padding:12px 16px;border-radius:10px;font-size:14px;font-family:var(--fs);cursor:pointer;transition:all .2s;width:100%;display:block;margin-bottom:8px;background:#fff;border:1px solid var(--border);color:var(--txt);min-height:44px;-webkit-tap-highlight-color:transparent}
 .opt-btn:hover{border-color:var(--pri)}
 .opt-btn.selected{background:var(--tealLt);border:2px solid var(--teal)}
-.opt-btn.wrong{background:#fef2f2;border:2px solid var(--err)}
+.opt-btn.wrong{background:#fff1f0;border:2px solid var(--err)}
 .opt-btn.correct{background:var(--okLt);border:2px solid var(--ok);color:var(--ok)}
 .opt-btn:disabled{cursor:default}
 .progress-dots{display:flex;gap:3px}
 .progress-dots span{height:8px;border-radius:4px;transition:all .3s}
-.nav-phases{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:24px;flex-wrap:wrap}
+.nav-phases{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;flex-wrap:wrap}
 .nav-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:14px;font-weight:700;transition:all .3s}
 .nav-line{width:28px;height:2px;margin-bottom:18px;transition:background .3s}
-.step-bar{display:flex;gap:6px;padding-top:16px;padding-bottom:8px}
+.step-bar{display:flex;gap:6px;padding-top:16px;padding-bottom:10px}
 .step-bar div{flex:1;height:4px;border-radius:2px;transition:all .4s}
-.recap-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(226,232,240,.15)}
+.recap-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid rgba(232,236,240,.5)}
 .recap-check{width:22px;height:22px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px}
 details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--txtM);font-family:var(--fs);padding:8px 0;user-select:none}
 @media(max-width:600px){
   body{padding:12px 10px}
-  .card{padding:16px 16px}
+  .card{padding:18px 18px}
   h1{font-size:24px}
   h2{font-size:19px}
-  .step-card{padding:12px 14px}
+  .step-card{padding:14px 16px}
   .nav-dot{width:30px;height:30px;font-size:12px}
   .nav-line{width:16px}
 }
 #sub-panel::-webkit-scrollbar{width:4px}
-#sub-panel::-webkit-scrollbar-track{background:#f1f5f9;border-radius:2px}
-#sub-panel::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
+#sub-panel::-webkit-scrollbar-track{background:#f8f9fa;border-radius:2px}
+#sub-panel::-webkit-scrollbar-thumb{background:#dfe6e9;border-radius:2px}
 
-/* Studio view — ottimizzata per iPad landscape */
+/* Studio / Welcome split view */
 .studio-wrap{max-width:1180px;margin:0 auto}
 .studio-top{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:0 4px}
-.studio-split{display:flex;gap:24px;align-items:flex-start}
+.studio-split{display:flex;gap:32px;align-items:flex-start}
 .studio-left{width:52%;flex-shrink:0}
 .studio-right{flex:1;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:8px}
 .studio-right::-webkit-scrollbar{width:4px}
-.studio-right::-webkit-scrollbar-track{background:#f1f5f9;border-radius:2px}
-.studio-right::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:2px}
-.studio-line{display:flex;gap:10px;padding:10px 12px;border-left:3px solid transparent;border-radius:0 8px 8px 0;margin-bottom:4px;cursor:pointer;transition:all .3s;font-size:15px;line-height:1.7;color:var(--txtM)}
-.studio-line:hover{background:#f8fafc}
+.studio-right::-webkit-scrollbar-track{background:#f8f9fa;border-radius:2px}
+.studio-right::-webkit-scrollbar-thumb{background:#dfe6e9;border-radius:2px}
+.studio-line{display:flex;gap:10px;padding:11px 14px;border-left:3px solid transparent;border-radius:0 10px 10px 0;margin-bottom:4px;cursor:pointer;transition:all .3s;font-size:15px;line-height:1.7;color:var(--txtM)}
+.studio-line:hover{background:#f8f9fa}
 .studio-active{background:var(--priLt)!important;border-left-color:var(--pri)!important;color:var(--txt)!important;font-weight:600}
-.studio-done{background:#f0fdf4;border-left-color:var(--ok);color:var(--txtM)}
+.studio-done{background:#f0fdfa;border-left-color:var(--ok);color:var(--txtM)}
 .studio-time{font-family:var(--fm);font-size:11px;color:var(--txtL);white-space:nowrap;padding-top:3px;min-width:36px}
 .studio-txt{flex:1}
-.gterm{color:var(--pri);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;transition:background .2s;border-radius:2px;padding:0 2px;margin:0 -2px}
-.gterm:hover{background:var(--priLt)}
+.gterm{color:var(--teal);text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px;cursor:pointer;transition:background .2s;border-radius:2px;padding:0 2px;margin:0 -2px}
+.gterm:hover{background:var(--tealLt)}
 @media(max-width:768px){
   .studio-split{flex-direction:column}
   .studio-left{width:100%}
@@ -106,8 +107,8 @@ details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--txtM);
    ═════════════════════════════════ */
 const CODON_TABLE={UUU:"Phe",UUC:"Phe",UUA:"Leu",UUG:"Leu",CUU:"Leu",CUC:"Leu",CUA:"Leu",CUG:"Leu",AUU:"Ile",AUC:"Ile",AUA:"Ile",AUG:"Met",GUU:"Val",GUC:"Val",GUA:"Val",GUG:"Val",UCU:"Ser",UCC:"Ser",UCA:"Ser",UCG:"Ser",CCU:"Pro",CCC:"Pro",CCA:"Pro",CCG:"Pro",ACU:"Thr",ACC:"Thr",ACA:"Thr",ACG:"Thr",GCU:"Ala",GCC:"Ala",GCA:"Ala",GCG:"Ala",UAU:"Tyr",UAC:"Tyr",UAA:"STOP",UAG:"STOP",UGU:"Cys",UGC:"Cys",UGA:"STOP",UGG:"Trp",CGU:"Arg",CGC:"Arg",CGA:"Arg",CGG:"Arg",AGU:"Ser",AGC:"Ser",AGA:"Arg",AGG:"Arg",GGU:"Gly",GGC:"Gly",GGA:"Gly",GGG:"Gly",CAU:"His",CAC:"His",CAA:"Gln",CAG:"Gln",AAU:"Asn",AAC:"Asn",AAA:"Lys",AAG:"Lys",GAU:"Asp",GAC:"Asp",GAA:"Glu",GAG:"Glu"};
 const AF={Met:"Metionina",Phe:"Fenilalanina",Leu:"Leucina",Ile:"Isoleucina",Val:"Valina",Ser:"Serina",Pro:"Prolina",Thr:"Treonina",Ala:"Alanina",Tyr:"Tirosina",Cys:"Cisteina",Trp:"Triptofano",Arg:"Arginina",Gly:"Glicina",His:"Istidina",Gln:"Glutammina",Asn:"Asparagina",Lys:"Lisina",Asp:"Ac.Aspartico",Glu:"Ac.Glutammico",STOP:"STOP"};
-const AC={Met:"#d97706",Phe:"#7c3aed",Leu:"#4f46e5",Ile:"#6366f1",Val:"#7c3aed",Ser:"#059669",Pro:"#db2777",Thr:"#0d9488",Ala:"#65a30d",Tyr:"#9333ea",Cys:"#ca8a04",Trp:"#c026d3",Arg:"#2563eb",Gly:"#64748b",His:"#ea580c",Gln:"#16a34a",Asn:"#0284c7",Lys:"#dc2626",Asp:"#e11d48",Glu:"#be123c",STOP:"#6b7280"};
-const BC={A:"#16a34a",T:"#dc2626",G:"#2563eb",C:"#ca8a04",U:"#9333ea"};
+const AC={Met:"#d97706",Phe:"#f97066",Leu:"#4f46e5",Ile:"#6366f1",Val:"#f97066",Ser:"#059669",Pro:"#db2777",Thr:"#0d9488",Ala:"#65a30d",Tyr:"#9333ea",Cys:"#ca8a04",Trp:"#c026d3",Arg:"#2563eb",Gly:"#64748b",His:"#ea580c",Gln:"#16a34a",Asn:"#0284c7",Lys:"#dc2626",Asp:"#e11d48",Glu:"#be123c",STOP:"#6b7280"};
+const BC={A:"#0d9488",T:"#1a5276",G:"#2d3436",C:"#c27803",U:"#f97066"};
 
 const SCHEDE=[
 {title:"Il Caso di Marco",steps:[
@@ -188,33 +189,33 @@ const SUBS=[
 let ytPlayer=null,subInterval=null;
 
 const GLOSS={
-"cellula":"L\u2019unit\u00e0 fondamentale di tutti gli esseri viventi. Ogni cellula \u00e8 un sistema autonomo capace di nutrirsi, crescere e riprodursi.",
-"proteine":"Molecole complesse formate da catene di amminoacidi. Svolgono funzioni essenziali: strutturali, di trasporto, ormonali e catalitiche (enzimi).",
-"proteina":"Molecola complessa formata da una catena di amminoacidi ripiegata in una forma tridimensionale specifica che ne determina la funzione.",
-"trascrizione":"Prima fase della sintesi proteica: il DNA viene copiato in una molecola di mRNA nel nucleo della cellula. Enzima coinvolto: RNA polimerasi.",
-"traduzione":"Seconda fase della sintesi proteica: il ribosoma legge l\u2019mRNA tre basi alla volta (codoni) e assembla la catena di amminoacidi.",
-"nucleo":"Struttura presente nelle cellule eucariote che contiene e protegge il DNA. \u00c8 separato dal citoplasma dalla membrana nucleare.",
-"genoma":"L\u2019insieme completo di tutte le informazioni genetiche di un organismo, contenute nel DNA.",
-"cromosomi":"Strutture formate da DNA compattato attorno a proteine (istoni). Nell\u2019uomo ce ne sono 23 coppie, per un totale di 46.",
-"cromosoma":"Struttura formata da DNA compattato attorno a proteine (istoni). Ogni cromosoma contiene migliaia di geni.",
-"DNA":"Acido desossiribonucleico. Molecola a doppia elica che contiene le istruzioni genetiche, scritte con 4 basi azotate: A, T, G, C.",
-"istoni":"Proteine a forma di bobina attorno alle quali il DNA si avvolge strettamente per compattarsi e organizzarsi nei cromosomi.",
-"basi":"Le 4 lettere del codice genetico: Adenina (A), Timina (T), Guanina (G), Citosina (C). Nell\u2019RNA, la Timina \u00e8 sostituita dall\u2019Uracile (U).",
-"geni":"Segmenti di DNA che contengono le istruzioni per produrre una specifica proteina. Il genoma umano contiene circa 20.000 geni.",
-"gene":"Segmento di DNA che contiene le istruzioni per produrre una specifica proteina.",
-"RNA polimerasi":"Enzima che scorre lungo il DNA e costruisce l\u2019mRNA durante la trascrizione, copiando le basi una alla volta rispettando le regole di complementariet\u00e0.",
-"RNA messaggero":"Copia temporanea di un gene che trasporta le istruzioni dal nucleo al ribosoma nel citoplasma. Abbreviato: mRNA.",
-"citoplasma":"La sostanza gelatinosa (acqua, sali, proteine) che riempie la cellula tra il nucleo e la membrana. Contiene i ribosomi e gli organuli.",
-"ribosoma":"La macchina molecolare che legge l\u2019mRNA e assembla la proteina, aggiungendo un amminoacido alla volta leggendo i codoni.",
-"aminoacidi":"I 20 mattoncini molecolari che, combinati in sequenze diverse, formano tutte le proteine. Sinonimo: amminoacidi.",
-"amminoacido":"Uno dei 20 mattoncini molecolari che compongono le proteine. Ogni codone (tripletta) dell\u2019mRNA specifica quale amminoacido aggiungere.",
-"RNA di trasporto":"Molecole a forma di quadrifoglio (tRNA) che trasportano gli amminoacidi al ribosoma durante la traduzione. Ogni tRNA riconosce un codone specifico.",
-"tripletta":"Gruppo di 3 basi consecutive nell\u2019mRNA, detto anche codone. Ogni tripletta codifica uno specifico amminoacido o un segnale di STOP.",
-"struttura tridimensionale":"La forma nello spazio che la catena di amminoacidi assume ripiegandosi. Questa forma determina la funzione della proteina.",
-"codice":"Nel contesto del DNA/mRNA: la sequenza di basi azotate che codifica le informazioni genetiche. Il codice genetico \u00e8 universale e ridondante (64 codoni per 20 amminoacidi).",
-"filamento":"Una delle due catene che compongono la doppia elica del DNA. Durante la trascrizione viene letto il filamento stampo (3\u2019\u21925\u2019).",
-"modello":"In biologia molecolare: una molecola che serve da stampo per costruirne un\u2019altra. Il DNA \u00e8 modello per l\u2019mRNA, l\u2019mRNA \u00e8 modello per la proteina.",
-"catena":"Sequenza lineare di amminoacidi legati tra loro (catena polipeptidica). Una volta completa, si ripiega nella forma funzionale della proteina."
+"cellula":"L\u2019unit\u00e0 fondamentale di tutti gli esseri viventi. Esempio: il tuo corpo ne contiene circa 37 trilioni, ognuna specializzata \u2014 i globuli rossi trasportano ossigeno, i neuroni trasmettono segnali elettrici, le cellule muscolari si contraggono.",
+"proteine":"Molecole costruite con catene di amminoacidi. Esempio: la cheratina rende forti i capelli e le unghie, il collagene tiene elastica la pelle, gli anticorpi ci difendono dalle infezioni. Ogni proteina ha una forma 3D unica che ne determina il lavoro.",
+"proteina":"Molecola formata da amminoacidi ripiegati in una forma 3D precisa. Esempio: l\u2019emoglobina ha la forma perfetta per \u201cafferrare\u201d l\u2019ossigeno nei polmoni e \u201crilasciarlo\u201d nei tessuti.",
+"trascrizione":"Prima fase della sintesi proteica: il DNA viene copiato in mRNA nel nucleo. Esempio: \u00e8 come fotografare una pagina del ricettario con il telefono \u2014 porti la foto in cucina senza rischiare l\u2019originale.",
+"traduzione":"Seconda fase: il ribosoma legge l\u2019mRNA e assembla gli amminoacidi. Esempio: \u00e8 come seguire una ricetta passo-passo al banco di lavoro, aggiungendo un ingrediente alla volta nell\u2019ordine giusto.",
+"nucleo":"Compartimento che protegge il DNA nella cellula. Esempio: funziona come la cassaforte di una banca \u2014 il contenuto prezioso (DNA) non esce mai, si mandano fuori solo le copie (mRNA) che servono.",
+"genoma":"Tutto il DNA di un organismo. Esempio: il genoma umano contiene 3 miliardi di coppie di basi \u2014 se lo stendessi sarebbe lungo circa 2 metri, ma \u00e8 compattato nel nucleo di ogni cellula (6 micrometri).",
+"cromosomi":"Strutture di DNA compattato. Esempio: sono come 23 volumi di un\u2019enciclopedia. Ogni volume (cromosoma) contiene migliaia di capitoli (geni). Ne ereditiamo 23 dalla mamma e 23 dal pap\u00e0.",
+"cromosoma":"Un \u201cvolume\u201d dell\u2019enciclopedia genetica. Esempio: il cromosoma 11 contiene il gene dell\u2019insulina \u2014 se quel gene \u00e8 mutato, il pancreas non produce insulina funzionante (diabete di tipo 1).",
+"DNA":"Acido desossiribonucleico, la molecola che contiene le istruzioni genetiche. Esempio: \u00e8 una scala a chiocciola (doppia elica) i cui gradini sono coppie di basi: A-T e G-C. Il tuo DNA \u00e8 identico al 99.9% a quello di qualsiasi altro essere umano.",
+"istoni":"Proteine-bobina attorno alle quali il DNA si avvolge per compattarsi. Esempio: come avvolgere 2 metri di filo attorno a dei rocchetti per farlo entrare in una scatola minuscola.",
+"basi":"Le 4 lettere del codice genetico: A, T, G, C (e U nell\u2019RNA). Esempio: con sole 4 lettere il DNA scrive 20.000 \u201cricette\u201d diverse, come l\u2019alfabeto Morse scrive qualsiasi messaggio con soli punti e linee.",
+"geni":"Segmenti di DNA con istruzioni per una proteina. Esempio: il gene \u201cINS\u201d sul cromosoma 11 contiene le istruzioni per l\u2019insulina. Una mutazione in questo gene pu\u00f2 causare il diabete.",
+"gene":"Un segmento di DNA = una ricetta per una proteina. Esempio: il gene \u201cHBB\u201d codifica la catena beta dell\u2019emoglobina. Una singola mutazione in questo gene causa l\u2019anemia falciforme.",
+"RNA polimerasi":"Enzima che copia il DNA in mRNA. Esempio: funziona come uno scanner che scorre lungo il foglio (DNA) e produce una copia digitale (mRNA) in tempo reale, rispettando le regole A\u2192U, T\u2192A, G\u2192C, C\u2192G.",
+"RNA messaggero":"Copia di un gene che viaggia dal nucleo al ribosoma (mRNA). Esempio: \u00e8 il \u201cmessaggio vocale\u201d che la cellula si auto-invia: registra l\u2019informazione nel nucleo e la consegna in citoplasma dove servir\u00e0.",
+"citoplasma":"Sostanza gelatinosa tra nucleo e membrana, dove lavorano i ribosomi. Esempio: \u00e8 la \u201ccucina\u201d della cellula \u2014 qui arriva la ricetta (mRNA) e qui si assemblano i piatti (proteine).",
+"ribosoma":"Macchina molecolare che legge l\u2019mRNA e costruisce la proteina. Esempio: funziona come una stampante 3D biologica: riceve il file digitale (mRNA), legge le istruzioni a triplette, e produce l\u2019oggetto (proteina) pezzo per pezzo.",
+"aminoacidi":"I 20 mattoncini che compongono le proteine. Esempio: sono come i 20 tipi di LEGO diversi \u2014 combinandoli in ordini diversi costruisci strutture completamente diverse (insulina, cheratina, collagene...).",
+"amminoacido":"Uno dei 20 mattoncini delle proteine. Esempio: la Metionina (Met) \u00e8 sempre il primo della catena perch\u00e9 il codone AUG che la codifica \u00e8 anche il segnale di START.",
+"RNA di trasporto":"Molecole (tRNA) che portano gli amminoacidi al ribosoma. Esempio: sono i \u201ccamerieri\u201d del ristorante cellulare \u2014 leggono l\u2019ordinazione (codone) e portano il piatto giusto (amminoacido).",
+"tripletta":"Gruppo di 3 basi che codifica un amminoacido (= codone). Esempio: AUG = Metionina + START, UUU = Fenilalanina, UAA = STOP. Con 4\u00d74\u00d74 = 64 triplette possibili per 20 amminoacidi.",
+"struttura tridimensionale":"La forma nello spazio della proteina, che ne determina la funzione. Esempio: l\u2019insulina ripiegata ha la forma perfetta per \u201cincastrarsi\u201d nel recettore della cellula, come una chiave nella serratura. Se si piega male, non funziona.",
+"codice":"La sequenza di basi che porta l\u2019informazione genetica. Esempio: il codice genetico \u00e8 universale: lo stesso codone AUG significa \u201cMetionina\u201d sia in un batterio che in un elefante. La vita parla una sola lingua!",
+"filamento":"Una catena del DNA. Esempio: il DNA ha due filamenti avvolti a elica. Per la trascrizione, l\u2019RNA polimerasi legge solo il filamento stampo (3\u2019\u21925\u2019) e ignora l\u2019altro.",
+"modello":"Molecola-stampo per costruirne un\u2019altra. Esempio: il DNA \u00e8 il modello per l\u2019mRNA (trascrizione), l\u2019mRNA \u00e8 il modello per la proteina (traduzione). Ogni passaggio copia fedelmente le informazioni.",
+"catena":"Sequenza di amminoacidi legati (catena polipeptidica). Esempio: l\u2019insulina umana \u00e8 una catena di 51 amminoacidi. L\u2019emoglobina ne ha 574. La titina (proteina muscolare) ne ha oltre 34.000!"
 };
 
 /* Evidenzia i termini del glossario nel testo */
@@ -330,36 +331,9 @@ function initYTPlayer(){
   const el=document.getElementById("yt-main");
   if(!el)return;
   if(ytPlayer){try{ytPlayer.destroy();}catch(e){}}
-  ytPlayer=new YT.Player("yt-main",{events:{onStateChange:onYTState}});
+  ytPlayer=new YT.Player("yt-main",{events:{onStateChange:onYTStudioState}});
 }
-function onYTState(e){
-  if(e.data===YT.PlayerState.PLAYING){
-    clearInterval(subInterval);
-    subInterval=setInterval(syncSubs,250);
-  }else{
-    clearInterval(subInterval);
-    if(e.data===YT.PlayerState.PAUSED)syncSubs();
-  }
-}
-function syncSubs(){
-  if(!ytPlayer||!ytPlayer.getCurrentTime)return;
-  const t=ytPlayer.getCurrentTime();
-  const panel=document.getElementById("sub-panel");
-  if(!panel)return;
-  const items=panel.querySelectorAll("[data-si]");
-  let activeIdx=-1;
-  SUBS.forEach((s,i)=>{if(t>=s.s&&t<s.e)activeIdx=i;});
-  items.forEach((el,i)=>{
-    if(i===activeIdx){
-      el.style.background="var(--priLt)";el.style.borderLeftColor="var(--pri)";el.style.color="var(--txt)";el.style.fontWeight="600";
-      el.scrollIntoView({behavior:"smooth",block:"nearest"});
-    }else if(i<activeIdx){
-      el.style.background="#f0fdf4";el.style.borderLeftColor="var(--ok)";el.style.color="var(--txtM)";el.style.fontWeight="400";
-    }else{
-      el.style.background="transparent";el.style.borderLeftColor="transparent";el.style.color="var(--txtL)";el.style.fontWeight="400";
-    }
-  });
-}
+function onYTState(e){/* legacy — redirects to studio handler */onYTStudioState(e);}
 function onYouTubeIframeAPIReady(){/* API ready — player init happens after render */}
 
 const SIM_PRESETS=[{name:"Insulina (frammento)",dna:"TACGAAGACCACGCGATT"},{name:"Emoglobina (inizio)",dna:"TACCACGTAGACTGAATT"},{name:"Sequenza breve",dna:"TACAAACGTCGAACT"}];
@@ -381,17 +355,17 @@ key_lock:`<div style="display:flex;align-items:center;justify-content:center;gap
   <svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 12h16M16 6l6 6-6 6" stroke="var(--amber)" stroke-width="2" fill="none"/></svg>
   <div style="text-align:center"><svg width="48" height="48" viewBox="0 0 48 48"><path d="M24 8v6M30 12l-6 8-6-8" stroke="var(--amber)" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="24" cy="8" r="3" fill="var(--amber)"/></svg><div style="font-size:10px;color:var(--amber);font-weight:600">Insulina (chiave)</div></div></div>`,
 tools:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{n:"Insulina",c:"var(--amber)",s:"Apre le cellule"},{n:"Emoglobina",c:"var(--err)",s:"Trasporta O\u2082"},{n:"Cheratina",c:"var(--teal)",s:"Forma i capelli"}].map(p=>`<div style="padding:8px 14px;background:${p.c}11;border:1.5px solid ${p.c}44;border-radius:8px;text-align:center"><div style="font-size:12px;font-weight:700;color:${p.c}">${p.n}</div><div style="font-size:10px;color:var(--txtM)">${p.s}</div></div>`).join("")}</div>`,
-ikea:`<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">${[{l:"Istruzioni",s:"DNA",c:"var(--pri)"},{l:"Messaggero",s:"mRNA",c:"#7c3aed"},{l:"Montaggio",s:"Ribosoma",c:"var(--teal)"}].map((x,i)=>`<div style="display:flex;align-items:center;gap:8px"><div style="padding:10px 14px;background:${x.c}11;border:1.5px solid ${x.c}33;border-radius:8px;text-align:center;min-width:80px"><div style="font-size:13px;font-weight:700;color:${x.c}">${x.l}</div><div style="font-size:11px;color:var(--txtM);font-family:var(--fm)">${x.s}</div></div>${i<2?'<svg width="20" height="16" viewBox="0 0 20 16"><path d="M2 8h14M14 3l4 5-4 5" stroke="var(--txtL)" stroke-width="1.5" fill="none"/></svg>':''}</div>`).join("")}</div>`,
+ikea:`<div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">${[{l:"Istruzioni",s:"DNA",c:"#1a5276"},{l:"Messaggero",s:"mRNA",c:"#f97066"},{l:"Montaggio",s:"Ribosoma",c:"#0d9488"}].map((x,i)=>`<div style="display:flex;align-items:center;gap:8px"><div style="padding:10px 14px;background:${x.c}11;border:1.5px solid ${x.c}33;border-radius:8px;text-align:center;min-width:80px"><div style="font-size:13px;font-weight:700;color:${x.c}">${x.l}</div><div style="font-size:11px;color:var(--txtM);font-family:var(--fm)">${x.s}</div></div>${i<2?'<svg width="20" height="16" viewBox="0 0 20 16"><path d="M2 8h14M14 3l4 5-4 5" stroke="var(--txtL)" stroke-width="1.5" fill="none"/></svg>':''}</div>`).join("")}</div>`,
 safe:`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div style="width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,#dbeafe,#eff6ff);border:2px solid #93c5fd;display:flex;flex-direction:column;align-items:center;justify-content:center"><svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="8" width="20" height="16" rx="3" fill="var(--pri)" opacity=".2" stroke="var(--pri)" stroke-width="1.5"/><circle cx="14" cy="16" r="3" fill="var(--pri)"/><rect x="10" y="2" width="8" height="8" rx="4" fill="none" stroke="var(--pri)" stroke-width="1.5"/></svg><span style="font-size:9px;font-weight:600;color:var(--pri)">NUCLEO</span></div><div style="font-size:11px;color:var(--txtM);max-width:140px;line-height:1.5">Il DNA resta sempre qui dentro, al sicuro</div></div>`,
 bases:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{l:"A",n:"Adenina",c:BC.A},{l:"T",n:"Timina",c:BC.T},{l:"G",n:"Guanina",c:BC.G},{l:"C",n:"Citosina",c:BC.C}].map(b=>`<div style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 14px;background:${b.c}11;border-radius:8px;border:2px solid ${b.c}44;min-width:70px"><div style="width:36px;height:36px;border-radius:8px;background:${b.c};display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:18px;font-weight:700;color:#fff">${b.l}</div><span style="font-size:11px;font-weight:600;color:${b.c}">${b.n}</span></div>`).join("")}</div>`,
-photocopy:`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div style="padding:10px 16px;background:#dbeafe;border-radius:8px;border:2px solid #93c5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:var(--pri)">DNA</div><div style="font-size:9px;color:var(--txtM)">Originale</div></div><svg width="36" height="20" viewBox="0 0 36 20"><path d="M4 10h24" stroke="var(--pri)" stroke-width="2"/><path d="M24 4l6 6-6 6" stroke="var(--pri)" stroke-width="2" fill="none"/></svg><div style="padding:10px 16px;background:#f3e8ff;border-radius:8px;border:2px solid #c4b5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:#7c3aed">mRNA</div><div style="font-size:9px;color:var(--txtM)">Copia</div></div></div>`,
+photocopy:`<div style="display:flex;align-items:center;justify-content:center;gap:12px"><div style="padding:10px 16px;background:#dbeafe;border-radius:8px;border:2px solid #93c5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:var(--pri)">DNA</div><div style="font-size:9px;color:var(--txtM)">Originale</div></div><svg width="36" height="20" viewBox="0 0 36 20"><path d="M4 10h24" stroke="var(--pri)" stroke-width="2"/><path d="M24 4l6 6-6 6" stroke="var(--pri)" stroke-width="2" fill="none"/></svg><div style="padding:10px 16px;background:var(--coralLt);border-radius:8px;border:2px solid #c4b5fd;text-align:center"><div style="font-size:14px;font-weight:700;font-family:var(--fm);color:var(--coral)">mRNA</div><div style="font-size:9px;color:var(--txtM)">Copia</div></div></div>`,
 t_to_u:`<div style="display:flex;gap:8px;align-items:center;justify-content:center"><span style="font-size:11px;color:var(--txtM)">Nel DNA:</span>${base("T",30)}<svg width="28" height="16" viewBox="0 0 28 16"><path d="M4 8h18M18 3l5 5-5 5" stroke="var(--txtL)" stroke-width="1.5" fill="none"/></svg><span style="font-size:11px;color:var(--txtM)">Nell'mRNA:</span>${base("U",30)}</div>`,
 pairing:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{d:"A",r:"U"},{d:"T",r:"A"},{d:"G",r:"C"},{d:"C",r:"G"}].map(p=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;background:#f8fafc;border-radius:8px;border:1px solid var(--border)">${base(p.d,26)}<span style="font-size:10px;color:var(--txtL)">\u2193</span>${base(p.r,26,false,true)}<span style="font-size:9px;color:var(--txtL)">DNA\u2192mRNA</span></div>`).join("")}</div>`,
 transcription:`<div style="display:flex;flex-direction:column;gap:6px;align-items:center"><div style="display:flex;gap:4px;align-items:center"><span style="font-size:10px;color:var(--txtL);width:50px;text-align:right">DNA</span>${["T","A","C"].map(b=>base(b,34)).join("")}</div><div style="display:flex;gap:4px;margin-left:54px">${[0,1,2].map(()=>`<span style="width:34px;text-align:center;color:var(--txtL);font-size:13px;font-family:var(--fm)">\u2193</span>`).join("")}</div><div style="display:flex;gap:4px;align-items:center"><span style="font-size:10px;color:var(--txtL);width:50px;text-align:right">mRNA</span>${["A","U","G"].map(b=>base(b,34,false,true)).join("")}</div><div style="margin-top:4px;padding:5px 12px;background:var(--okLt);border-radius:6px;font-size:11px;font-weight:600;color:var(--ok)">AUG = START</div></div>`,
 codons:`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">${[{c:"AUG",a:"Met"},{c:"GCU",a:"Ala"},{c:"UUU",a:"Phe"}].map(x=>`<div style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;border-radius:8px;background:${AC[x.a]}11;border:1.5px solid ${AC[x.a]}44"><div style="display:flex;gap:2px">${x.c.split("").map(b=>base(b,24)).join("")}</div><svg width="14" height="10" viewBox="0 0 14 10"><path d="M7 1v5M4 4l3 4 3-4" stroke="${AC[x.a]}" stroke-width="1.5" fill="none"/></svg>${amino(x.a,34)}</div>`).join("")}</div>`,
 padlock:`<div style="display:flex;align-items:center;justify-content:center;gap:10px">${[0,1,2].map((r,i)=>`<div style="display:flex;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:8px;background:var(--priLt);border:1.5px solid #93c5fd;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:14px;font-weight:700;color:var(--pri)">4</div>${i<2?'<span style="font-size:14px;color:var(--txtL);font-weight:700">\u00d7</span>':''}</div>`).join("")}<span style="font-size:14px;color:var(--txtL);font-weight:700">=</span><div style="padding:8px 14px;background:var(--okLt);border-radius:8px;font-family:var(--fm);font-size:18px;font-weight:700;color:var(--ok)">64</div></div>`,
 amino:`<div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">${[{cs:["GCU","GCC","GCA","GCG"],a:"Ala"},{cs:["AUG"],a:"Met"},{cs:["UAA","UAG","UGA"],a:"STOP"}].map(e=>`<div style="padding:8px 12px;border-radius:8px;background:#f8fafc;border:1px solid var(--border);text-align:center">${amino(e.a,32)}<div style="display:flex;gap:3px;margin-top:4px;justify-content:center;flex-wrap:wrap">${e.cs.map(c=>`<span style="font-size:10px;font-family:var(--fm);font-weight:600;color:var(--txtM);padding:2px 5px;background:#e2e8f0;border-radius:4px">${c}</span>`).join("")}</div></div>`).join("")}</div>`,
-redundancy:`<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${["GCU","GCC","GCA","GCG"].map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:6px;background:#f0fdf4;border:1px solid #bbf7d0"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:#7c3aed">${c}</span><span style="font-size:10px;font-weight:700;color:var(--ok)">Ala</span></div>`).join("")}<div style="display:flex;align-items:center;padding:0 8px;font-size:11px;color:var(--ok);font-weight:600">Stesso risultato!</div></div>`,
+redundancy:`<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${["GCU","GCC","GCA","GCG"].map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:6px;background:#f0fdf4;border:1px solid #bbf7d0"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--coral)">${c}</span><span style="font-size:10px;font-weight:700;color:var(--ok)">Ala</span></div>`).join("")}<div style="display:flex;align-items:center;padding:0 8px;font-size:11px;color:var(--ok);font-weight:600">Stesso risultato!</div></div>`,
 traffic:`<div style="display:flex;gap:16px;justify-content:center;align-items:flex-end"><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 0 12px #16a34a44">GO</div><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--ok)">AUG</span><span style="font-size:9px;color:var(--txtL)">START</span></div>${["UAA","UAG","UGA"].map(c=>`<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:40px;height:40px;border-radius:50%;background:var(--err);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 0 12px #dc262644">ALT</div><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--err)">${c}</span><span style="font-size:9px;color:var(--txtL)">STOP</span></div>`).join("")}</div>`,
 chain:`<div style="display:flex;align-items:center;justify-content:center;gap:0">${["Met","Ala","Phe"].map((a,i)=>`<div style="display:flex;align-items:center">${amino(a,38)}${i<2?'<div style="width:16px;height:3px;background:var(--pri);border-radius:2px;margin-bottom:16px"></div>':''}</div>`).join("")}<div style="width:16px;height:0;border-top:2px dashed var(--txtL);margin-bottom:16px"></div><div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:38px;height:38px;border-radius:50%;background:repeating-conic-gradient(#94a3b8 0% 25%,#cbd5e1 0% 50%);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;font-family:var(--fm)">STOP</div><span style="font-size:9px;color:var(--txtL)">Fine</span></div></div>`,
 folding:`<div style="display:flex;align-items:center;justify-content:center;gap:16px"><div style="text-align:center"><div style="display:flex;gap:2px;justify-content:center">${["Met","Ala","Phe"].map(a=>`<div style="width:24px;height:24px;border-radius:50%;background:${AC[a]};display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:#fff;font-family:var(--fm)">${a}</div>`).join("")}</div><span style="font-size:9px;color:var(--txtL)">Catena stesa</span></div><svg width="28" height="16" viewBox="0 0 28 16"><path d="M4 8h18M18 3l5 5-5 5" stroke="var(--amber)" stroke-width="2" fill="none"/></svg><div style="text-align:center"><div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,${AC.Met},${AC.Ala},${AC.Phe});display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;font-family:var(--fm);box-shadow:0 4px 12px rgba(0,0,0,.15)">3D</div><span style="font-size:9px;color:var(--amber);font-weight:600">Forma funzionale</span></div></div>`
@@ -422,14 +396,13 @@ function render(){
     setTimeout(initStudioPlayer,400);
     return;
   }
-  el.style.maxWidth="780px";
+  el.style.maxWidth=S.phase===0?"1180px":"780px";
   el.innerHTML=`
-    <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;background:var(--card);border-radius:12px;border:1px solid var(--border);margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
-      <img src="data:image/jpeg;base64,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" alt="Logo Scuola Sacra Famiglia" style="width:56px;height:56px;border-radius:10px;object-fit:cover;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;margin-bottom:20px">
+      <img src="logo.jpg" alt="Scuola Sacra Famiglia" style="width:48px;height:48px;border-radius:12px;object-fit:cover;flex-shrink:0">
       <div>
-        <div style="font-size:15px;font-weight:700;color:var(--pri);font-family:var(--f);line-height:1.3">Laboratorio di Scienze</div>
-        <div style="font-size:13px;color:var(--txtM);line-height:1.4">Prof.ssa Paola Grassi</div>
-        <div style="font-size:11px;color:var(--txtL)">Scuola Sacra Famiglia \u2014 Orzinuovi</div>
+        <div style="font-size:16px;font-weight:700;color:var(--pri);line-height:1.3;letter-spacing:-.01em">Laboratorio di Scienze</div>
+        <div style="font-size:13px;color:var(--txtM);line-height:1.4">Prof.ssa Paola Grassi \u2014 Scuola Sacra Famiglia, Orzinuovi</div>
       </div>
     </div>
     <div style="text-align:center;margin-bottom:8px">
@@ -449,7 +422,7 @@ function render(){
 }
 
 function renderNav(){
-  const ps=[{l:"Problema",i:"?"},{l:"Esplora",i:"1"},{l:"Simula",i:"2"},{l:"Sfida",i:"3"},{l:"Traguardo",i:"\u2605"}];
+  const ps=[{l:"Video",i:"\u25B6"},{l:"Marco + Schede",i:"1"},{l:"Simulatore",i:"2"},{l:"Sfide INVALSI",i:"3"},{l:"Traguardo",i:"\u2605"}];
   return `<div class="nav-phases">${ps.map((p,i)=>{
     const done=i<S.phase,cur=i===S.phase,lock=i>S.maxP;
     return `<div style="display:flex;align-items:center">
@@ -463,49 +436,54 @@ function renderNav(){
 }
 
 function renderWelcome(){
-  return `<div class="card" style="text-align:center;padding:40px 28px">
-    <svg width="80" height="80" viewBox="0 0 80 80" style="margin-bottom:16px"><circle cx="40" cy="40" r="38" fill="var(--priLt)" stroke="var(--pri)" stroke-width="2"/><text x="40" y="35" text-anchor="middle" font-size="11" fill="var(--pri)" font-weight="600">DNA</text><text x="40" y="48" text-anchor="middle" font-size="9" fill="var(--txtL)">\u2192 mRNA \u2192 Proteina</text></svg>
-    <h2 style="margin-bottom:8px">Come fa il corpo a costruire le proteine?</h2>
-    <p style="font-size:15px;color:var(--txtM);line-height:1.7;max-width:500px;margin:0 auto 24px">In questo percorso scoprirai il meccanismo con cui le cellule leggono il DNA e costruiscono le proteine.</p>
+  const subHtml=SUBS.map((s,i)=>`<div class="studio-line" data-sti="${i}" onclick="if(ytPlayer&&ytPlayer.seekTo){ytPlayer.seekTo(${s.s},true);ytPlayer.playVideo();}">
+    <span class="studio-time">${Math.floor(s.s/60)}:${String(Math.floor(s.s%60)).padStart(2,'0')}</span>
+    <span class="studio-txt">${glossify(s.t)}</span>
+  </div>`).join("");
 
-    <div style="margin:0 auto 24px;max-width:560px">
-      <div style="font-size:13px;font-weight:600;color:var(--pri);margin-bottom:10px;text-align:left">Prima di iniziare, guarda questo video introduttivo:</div>
-      <div style="display:flex;flex-direction:column;gap:0">
-        <div>
-          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px 10px 0 0;border:1px solid var(--border);border-bottom:none;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-            <iframe id="yt-main" src="https://www.youtube.com/embed/x2r0E2eIcWM?rel=0&playsinline=1&modestbranding=1&enablejsapi=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div>
+        <h2 style="margin-bottom:2px">Dal DNA alla Proteina</h2>
+        <p style="font-size:13px;color:var(--txtM)">Guarda il video e segui il testo. Clicca sulle <span class="gterm" style="pointer-events:none">parole evidenziate</span> per il glossario.</p>
+      </div>
+      <button class="btn btn-pri" onclick="go(1)" style="font-size:13px">Inizia il percorso interattivo \u2192</button>
+    </div>
+
+    <div class="studio-split">
+      <div class="studio-left">
+        <div style="position:sticky;top:12px">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.1)">
+            <iframe id="yt-main" src="https://www.youtube.com/embed/x2r0E2eIcWM?rel=0&playsinline=1&modestbranding=1&enablejsapi=1&iv_load_policy=3" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
           </div>
-          <div id="sub-panel" style="max-height:160px;overflow-y:auto;border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:8px;background:var(--card)">
-            ${SUBS.map((s,i)=>`<div data-si="${i}" style="padding:6px 10px;margin-bottom:2px;border-left:3px solid transparent;border-radius:0 6px 6px 0;font-size:13px;line-height:1.55;color:var(--txtL);transition:all .3s;cursor:pointer" onclick="if(ytPlayer&&ytPlayer.seekTo){ytPlayer.seekTo(${s.s},true);ytPlayer.playVideo();}">${s.t}</div>`).join("")}
-          </div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
-          <div>
-            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.06)">
-              <iframe src="https://www.youtube.com/embed/o2VsuDt4vXw?rel=0&playsinline=1&modestbranding=1&enablejsapi=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
+          <div id="gloss-popup" style="display:none;margin-top:12px;padding:14px 16px;background:var(--amberLt);border:1px solid #fde68a;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);font-size:14px;line-height:1.6"></div>
+          <details style="margin-top:12px"><summary style="font-size:12px;padding:4px 0;color:var(--txtL)">Video di approfondimento</summary>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+              <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid var(--border)"><iframe src="https://www.youtube.com/embed/o2VsuDt4vXw?rel=0&playsinline=1&modestbranding=1&iv_load_policy=3" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
+              <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid var(--border)"><iframe src="https://www.youtube.com/embed/K90Ps7XoFV8?rel=0&playsinline=1&modestbranding=1&iv_load_policy=3" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe></div>
             </div>
-          </div>
-          <div>
-            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:8px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.06)">
-              <iframe src="https://www.youtube.com/embed/K90Ps7XoFV8?rel=0&playsinline=1&modestbranding=1&enablejsapi=1" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" allowfullscreen></iframe>
-            </div>
-          </div>
+          </details>
+          <details style="margin-top:8px"><summary style="font-size:12px;padding:4px 0;color:var(--txtL)">Schema del processo</summary>
+            <img src="${DNA_IMG}" alt="Dal DNA alla Proteina" style="width:100%;border-radius:8px;margin-top:8px;border:1px solid var(--border)">
+          </details>
         </div>
       </div>
-      <p style="font-size:12px;color:var(--txtL);margin-top:10px;text-align:left">Segui il testo sincronizzato mentre guardi il video principale, poi approfondisci con i due video aggiuntivi. Quando sei pronto, inizia il percorso interattivo.</p>
+      <div class="studio-right">
+        <div style="font-size:11px;font-weight:600;color:var(--txtL);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;padding-left:8px">Trascrizione sincronizzata</div>
+        ${subHtml}
+        <div style="padding:16px 14px;margin-top:16px;background:var(--priLt);border-radius:12px">
+          <p style="font-size:13px;font-weight:700;color:var(--pri);margin-bottom:10px">Il percorso che ti aspetta:</p>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">
+            <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--txtM)"><span style="width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span><span><strong style="color:var(--txt)">Il caso di Marco</strong> \u2014 Perch\u00e9 l\u2019insulina? 7 schede guidate con verifiche</span></div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--txtM)"><span style="width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span><span><strong style="color:var(--txt)">Simulatore DNA</strong> \u2014 Sperimenta: inserisci una sequenza e guarda la proteina formarsi</span></div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--txtM)"><span style="width:22px;height:22px;border-radius:50%;background:var(--coral);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span><span><strong style="color:var(--txt)">Sfide INVALSI</strong> \u2014 Mutazioni, STOP prematuro, ridondanza del codice</span></div>
+            <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:var(--txtM)"><span style="width:22px;height:22px;border-radius:50%;background:var(--amber);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">\u2605</span><span><strong style="color:var(--txt)">Badge Biologo Molecolare</strong> \u2014 Completa tutto e ottieni il riconoscimento</span></div>
+          </div>
+          <div style="text-align:center"><button class="btn btn-pri" onclick="go(1)">Inizia il percorso interattivo \u2192</button></div>
+        </div>
+      </div>
     </div>
-
-    <div style="margin:0 auto 24px;max-width:560px">
-      <div style="font-size:13px;font-weight:600;color:var(--teal);margin-bottom:8px;text-align:left">Il processo che esplorerai:</div>
-      <img src="${DNA_IMG}" alt="Dal DNA alla Proteina - schema del processo" style="width:100%;border-radius:10px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,.06)">
-    </div>
-
-    <p style="font-size:13px;color:var(--txtL);margin-bottom:24px">7 schede \u00b7 21 verifiche \u00b7 1 simulatore \u00b7 4 sfide \u00b7 circa 40 minuti</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-pri" onclick="go(1)">Inizia il percorso \u2192</button>
-      <button class="btn btn-out" onclick="openStudio()" style="font-size:13px">Apri lo Studio del Video</button>
-    </div>
-  </div>`;
+  `;
 }
 
 /* ═════════════════════════════════
@@ -540,8 +518,8 @@ function renderGuided(){
 
   let exampleCard="";
   if(S.sub>=1){
-    exampleCard=`<div class="step-card fade-in" style="border-left:4px solid #7c3aed;background:#7c3aed08">
-      <div class="step-tag" style="color:#7c3aed">Esempio</div>
+    exampleCard=`<div class="step-card fade-in" style="border-left:4px solid var(--coral);background:#f9706608">
+      <div class="step-tag" style="color:var(--coral)">Esempio</div>
       <p style="font-size:14px;line-height:1.7;margin:0;${vis?'margin-bottom:12px':''}">${step.example}</p>
       ${vis?`<div style="padding:12px;background:#fafaf8;border-radius:8px;border:1px solid var(--border);margin-top:8px">${vis}</div>`:''}
     </div>`;
@@ -689,7 +667,7 @@ function renderSim(){
       <button class="btn btn-gh" onclick="simReset()">Reset</button>
       <div style="margin-left:auto;display:flex;align-items:center;gap:6px"><span style="font-size:11px;color:var(--txtL)">Velocit\u00e0</span><input type="range" min="100" max="1000" step="50" value="${1100-S.simSpd}" oninput="simSetSpd(+this.value)" style="width:70px;accent-color:var(--pri)"></div>
     </div>
-    <div style="padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;font-weight:600;background:${sp==="tr"?"#dbeafe":sp==="tl"?"#f3e8ff":sp==="done"?"var(--okLt)":"#f1f5f9"};color:${sp==="tr"?"var(--pri)":sp==="tl"?"#7c3aed":sp==="done"?"var(--ok)":"var(--txtL)"}">
+    <div style="padding:10px 14px;border-radius:8px;margin-bottom:16px;font-size:13px;font-weight:600;background:${sp==="tr"?"#dbeafe":sp==="tl"?"var(--coralLt)":sp==="done"?"var(--okLt)":"#f1f5f9"};color:${sp==="tr"?"var(--pri)":sp==="tl"?"var(--coral)":sp==="done"?"var(--ok)":"var(--txtL)"}">
       <div style="display:flex;justify-content:space-between"><span>${sp==="idle"?"Pronto \u2014 premi Avvia per iniziare":sp==="tr"?"FASE 1: Trascrizione \u2014 DNA \u2192 mRNA":sp==="tl"?"FASE 2: Traduzione \u2014 mRNA \u2192 Proteina":"Sintesi completata!"}</span><span style="font-weight:400;font-size:12px">${S.simStep}/${tot}</span></div>
       ${sp==="tr"?'<div style="font-size:11px;font-weight:400;margin-top:4px;opacity:.8">L\u2019RNA polimerasi sta copiando il DNA in mRNA, base per base</div>':''}
       ${sp==="tl"?'<div style="font-size:11px;font-weight:400;margin-top:4px;opacity:.8">Il ribosoma legge i codoni (triplette) e aggiunge gli amminoacidi alla catena</div>':''}
@@ -700,13 +678,13 @@ function renderSim(){
       <div style="display:flex;align-items:flex-start;gap:6px"><span style="font-size:10px;color:var(--txtL);width:64px;text-align:right;padding-top:6px;flex-shrink:0">mRNA 5'\u21923'</span><div style="display:flex;gap:2px;flex-wrap:wrap;min-height:26px">${mrnaRow}</div></div>
     </div>
     <div style="margin-bottom:16px">
-      <div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:1px;margin-bottom:8px">TRADUZIONE</div>
+      <div style="font-size:11px;font-weight:700;color:var(--coral);letter-spacing:1px;margin-bottom:8px">TRADUZIONE</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">${codonHtml}</div>
     </div>
     ${chainHtml}${doneHtml}
   </div>
   <details style="margin-bottom:16px"><summary>Tabella completa dei 64 codoni</summary>
-    <div class="card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:4px;padding:14px">${Object.entries(CODON_TABLE).map(([c,a])=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:4px;background:#f8fafc"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:#7c3aed">${c}</span><span style="font-size:10px;font-weight:600;color:${AC[a]}">${a}</span></div>`).join("")}</div>
+    <div class="card" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:4px;padding:14px">${Object.entries(CODON_TABLE).map(([c,a])=>`<div style="display:flex;align-items:center;gap:6px;padding:3px 8px;border-radius:4px;background:#f8fafc"><span style="font-family:var(--fm);font-size:11px;font-weight:600;color:var(--coral)">${c}</span><span style="font-size:10px;font-weight:600;color:${AC[a]}">${a}</span></div>`).join("")}</div>
   </details>
   <details style="margin-bottom:16px"><summary>Schema del processo completo</summary>
     <div class="card" style="padding:14px"><img src="${DNA_IMG}" alt="Dal DNA alla Proteina" style="width:100%;border-radius:8px"></div>
@@ -754,13 +732,13 @@ function renderChallenge(){
    ═════════════════════════════════ */
 function renderBadge(){
   return `<div class="card" style="text-align:center;padding:40px 28px">
-    <svg width="120" height="120" viewBox="0 0 120 120" style="margin-bottom:20px"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--pri)"/><stop offset="100%" stop-color="#7c3aed"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="url(#bg)" stroke="#c7d2fe" stroke-width="3"/><circle cx="60" cy="60" r="46" fill="none" stroke="#fff" stroke-width="1.5" opacity=".3"/><text x="60" y="46" text-anchor="middle" fill="#fff" font-family="serif" font-size="13" font-weight="600">BIOLOGO</text><text x="60" y="64" text-anchor="middle" fill="#fff" font-family="serif" font-size="12" font-weight="600">MOLECOLARE</text><text x="60" y="84" text-anchor="middle" fill="#c7d2fe" font-size="11">\u2605 \u2605 \u2605</text></svg>
+    <svg width="120" height="120" viewBox="0 0 120 120" style="margin-bottom:20px"><defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--pri)"/><stop offset="100%" stop-color="var(--coral)"/></linearGradient></defs><circle cx="60" cy="60" r="56" fill="url(#bg)" stroke="#c7d2fe" stroke-width="3"/><circle cx="60" cy="60" r="46" fill="none" stroke="#fff" stroke-width="1.5" opacity=".3"/><text x="60" y="46" text-anchor="middle" fill="#fff" font-family="serif" font-size="13" font-weight="600">BIOLOGO</text><text x="60" y="64" text-anchor="middle" fill="#fff" font-family="serif" font-size="12" font-weight="600">MOLECOLARE</text><text x="60" y="84" text-anchor="middle" fill="#c7d2fe" font-size="11">\u2605 \u2605 \u2605</text></svg>
     <h2 style="font-size:26px;margin-bottom:8px">Complimenti!</h2>
     <p style="font-size:15px;color:var(--txtM);line-height:1.7;max-width:520px;margin:0 auto 20px">Hai completato l\u2019intero percorso sulla sintesi proteica. Ecco cosa hai imparato:</p>
 
     <div style="text-align:left;max-width:480px;margin:0 auto 24px;display:flex;flex-direction:column;gap:8px">
       <div style="padding:10px 14px;background:var(--priLt);border-radius:8px;border-left:4px solid var(--pri);font-size:13px;line-height:1.5"><strong style="color:var(--pri)">Trascrizione:</strong> il DNA (nel nucleo) viene copiato in mRNA. Le basi si accoppiano: A\u2192U, T\u2192A, G\u2192C, C\u2192G.</div>
-      <div style="padding:10px 14px;background:#f3e8ff;border-radius:8px;border-left:4px solid #7c3aed;font-size:13px;line-height:1.5"><strong style="color:#7c3aed">Traduzione:</strong> il ribosoma legge l\u2019mRNA a triplette (codoni). Ogni codone corrisponde a un amminoacido. AUG = start, UAA/UAG/UGA = stop.</div>
+      <div style="padding:10px 14px;background:var(--coralLt);border-radius:8px;border-left:4px solid var(--coral);font-size:13px;line-height:1.5"><strong style="color:var(--coral)">Traduzione:</strong> il ribosoma legge l\u2019mRNA a triplette (codoni). Ogni codone corrisponde a un amminoacido. AUG = start, UAA/UAG/UGA = stop.</div>
       <div style="padding:10px 14px;background:var(--okLt);border-radius:8px;border-left:4px solid var(--ok);font-size:13px;line-height:1.5"><strong style="color:var(--ok)">Proteina:</strong> gli amminoacidi si legano in catena e la catena si piega nella forma 3D che determina la sua funzione.</div>
     </div>
 
