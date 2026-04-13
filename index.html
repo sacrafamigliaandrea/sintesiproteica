@@ -97,6 +97,34 @@ details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--txtM);
   .studio-left>div{position:static!important}
   .studio-right{max-height:none}
 }
+/* Guided sidebar stepper */
+.guided-wrap{display:flex;gap:24px;align-items:flex-start;max-width:1080px;margin:0 auto}
+.guided-main{flex:1;min-width:0}
+.guided-side{width:220px;flex-shrink:0;position:sticky;top:16px}
+.gs-scheda{margin-bottom:2px}
+.gs-title{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:600;color:var(--txtL);transition:all .2s;cursor:default}
+.gs-title.gs-done{color:var(--ok)}
+.gs-title.gs-active{color:var(--pri);background:var(--priLt)}
+.gs-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;transition:all .3s}
+.gs-dot-future{background:#e8ecf0;color:var(--txtL)}
+.gs-dot-active{background:var(--pri);color:#fff;box-shadow:0 0 0 3px #1a527622}
+.gs-dot-done{background:var(--ok);color:#fff}
+.gs-steps{padding:2px 0 2px 20px;border-left:2px solid #e8ecf0;margin-left:20px}
+.gs-step{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:6px;font-size:11px;color:var(--txtL);margin-bottom:1px;transition:all .2s;position:relative}
+.gs-step::before{content:'';position:absolute;left:-14px;width:8px;height:8px;border-radius:50%;background:#e8ecf0;transition:all .2s}
+.gs-step.gs-s-done::before{background:var(--ok)}
+.gs-step.gs-s-active{color:var(--pri);font-weight:600}
+.gs-step.gs-s-active::before{background:var(--pri);box-shadow:0 0 0 3px #1a527622}
+.gs-step.gs-s-done{color:var(--ok)}
+.gs-arrow{text-align:center;color:#e8ecf0;font-size:10px;line-height:1;padding:1px 0 1px 10px}
+.gs-arrow.gs-arr-done{color:var(--ok)}
+@media(max-width:900px){
+  .guided-wrap{flex-direction:column}
+  .guided-side{width:100%;position:static;display:flex;gap:4px;flex-wrap:wrap;margin-bottom:16px}
+  .guided-side .gs-scheda{margin-bottom:0}
+  .guided-side .gs-steps{display:none}
+  .guided-side .gs-arrow{display:none}
+}
 </style>
 </head>
 <body>
@@ -396,10 +424,10 @@ function render(){
     setTimeout(initStudioPlayer,400);
     return;
   }
-  el.style.maxWidth=S.phase===0?"1180px":"780px";
+  el.style.maxWidth=(S.phase===0||S.phase===1)?"1180px":"780px";
   el.innerHTML=`
     <div style="display:flex;align-items:center;gap:16px;padding:16px 24px;margin-bottom:20px">
-      <img src="logo.jpg" alt="Scuola Sacra Famiglia" style="width:48px;height:48px;border-radius:12px;object-fit:cover;flex-shrink:0">
+      <img src="data:image/jpeg;base64,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" alt="Scuola Sacra Famiglia" style="width:48px;height:48px;border-radius:12px;object-fit:cover;flex-shrink:0">
       <div>
         <div style="font-size:16px;font-weight:700;color:var(--pri);line-height:1.3;letter-spacing:-.01em">Laboratorio di Scienze</div>
         <div style="font-size:13px;color:var(--txtM);line-height:1.4">Prof.ssa Paola Grassi \u2014 Scuola Sacra Famiglia, Orzinuovi</div>
@@ -504,6 +532,38 @@ function renderGuided(){
   const sch=SCHEDE[S.si],step=sch.steps[S.sti],total=sch.steps.length;
   const vis=step.visual?VIS[step.visual]:"";
 
+  /* ── Sidebar stepper ── */
+  const stepLabels=["Concetto","Esempio","Verifica"];
+  let sidebar="";
+  SCHEDE.forEach((sc,si)=>{
+    const isDone=si<S.si;
+    const isActive=si===S.si;
+    const dotCls=isDone?"gs-dot-done":isActive?"gs-dot-active":"gs-dot-future";
+    const titleCls=isDone?"gs-done":isActive?"gs-active":"";
+    sidebar+=`<div class="gs-scheda">
+      <div class="gs-title ${titleCls}">
+        <div class="gs-dot ${dotCls}">${isDone?"\u2713":(si+1)}</div>
+        <span>${sc.title}</span>
+      </div>`;
+    if(isActive){
+      sidebar+=`<div class="gs-steps">`;
+      sc.steps.forEach((_,sti)=>{
+        const sDone=sti<S.sti||(sti===S.sti&&S.sub>=3);
+        const sActive=sti===S.sti&&S.sub<3;
+        const cls=sDone?"gs-s-done":sActive?"gs-s-active":"";
+        const label=sti<S.sti?"Completato":sti===S.sti?stepLabels[Math.min(S.sub,2)]:"Da fare";
+        sidebar+=`<div class="gs-step ${cls}">${label}</div>`;
+      });
+      sidebar+=`</div>`;
+    }
+    sidebar+=`</div>`;
+    if(si<SCHEDE.length-1){
+      const arrDone=si<S.si;
+      sidebar+=`<div class="gs-arrow ${arrDone?'gs-arr-done':''}">\u25BC</div>`;
+    }
+  });
+
+  /* ── Recap of completed steps ── */
   let recap="";
   if(S.sti>0){
     recap=`<div style="background:#f8fafb;border-left:1px solid var(--border);border-right:1px solid var(--border);padding:8px 24px">${sch.steps.slice(0,S.sti).map(s=>`<div class="recap-item"><div class="recap-check">\u2713</div><p style="font-size:13px;color:var(--txtM);line-height:1.5;margin:0">${s.concept.substring(0,90)}...</p></div>`).join("")}</div>`;
@@ -511,7 +571,7 @@ function renderGuided(){
 
   let stepBar=`<div class="step-bar">${sch.steps.map((_,i)=>`<div style="background:${i<S.sti?'var(--ok)':i===S.sti?'var(--pri)':'#e2e8f0'}"></div>`).join("")}</div>`;
 
-  let conceptCard=`<div class="step-card fade-in" style="border-left:4px solid var(--pri);background:#1e40af08">
+  let conceptCard=`<div class="step-card fade-in" style="border-left:4px solid var(--pri);background:#1a527608">
     <div class="step-tag" style="color:var(--pri)">Concetto</div>
     <p style="font-size:15px;line-height:1.75;margin:0">${step.concept}</p>
   </div>`;
@@ -528,7 +588,7 @@ function renderGuided(){
   let checkCard="";
   if(S.sub>=2){
     const ch=step.check;
-    checkCard=`<div class="step-card fade-in" style="border-left:4px solid var(--teal);background:#0f766e0a">
+    checkCard=`<div class="step-card fade-in" style="border-left:4px solid var(--teal);background:#0d948808">
       <div class="step-tag" style="color:var(--teal)">Hai capito? Verifica</div>
       <p style="font-size:14px;font-weight:600;margin-bottom:10px">${ch.q}</p>
       ${ch.opts.map((o,i)=>{
@@ -549,7 +609,7 @@ function renderGuided(){
     const isLast=S.sti>=total-1&&S.si>=SCHEDE.length-1;
     const isLastStep=S.sti>=total-1;
     const label=isLast?"Vai al simulatore \u2192":isLastStep?"Prossima scheda \u2192":"Prossimo passo \u2192";
-    feedbackCard=`<div class="fade-in" style="background:var(--okLt);border:1px solid #86efac;border-radius:10px;padding:14px 18px;margin-bottom:12px">
+    feedbackCard=`<div class="fade-in" style="background:var(--okLt);border:1px solid #5eead4;border-radius:10px;padding:14px 18px;margin-bottom:12px">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
         <div style="width:24px;height:24px;border-radius:50%;background:var(--ok);display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;font-weight:700">\u2713</div>
         <span style="font-size:14px;font-weight:600;color:var(--ok)">Corretto!</span>
@@ -563,23 +623,31 @@ function renderGuided(){
   if(S.sub===0)advBtn=`<div style="text-align:center;margin-top:12px"><button class="btn btn-out" onclick="gAdvSub()" style="font-size:13px">Vedi l'esempio</button></div>`;
   if(S.sub===1)advBtn=`<div style="text-align:center;margin-top:12px"><button class="btn btn-out" onclick="gAdvSub()" style="font-size:13px;border-color:var(--teal);color:var(--teal)">Ora verifica</button></div>`;
 
-  return `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <span style="font-size:12px;color:var(--txtL)">Scheda ${S.si+1}/${SCHEDE.length} \u2014 Passo ${S.sti+1}/${total}</span>
-      <div class="progress-dots">${SCHEDE.map((_,i)=>`<span style="width:${i===S.si?18:8}px;background:${i<S.si?'var(--ok)':i===S.si?'var(--pri)':'#e2e8f0'}"></span>`).join("")}</div>
+  return `<div class="guided-wrap">
+    <div class="guided-main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:12px;color:var(--txtL)">Scheda ${S.si+1}/${SCHEDE.length} \u2014 Passo ${S.sti+1}/${total}</span>
+        <div class="progress-dots">${SCHEDE.map((_,i)=>`<span style="width:${i===S.si?18:8}px;background:${i<S.si?'var(--ok)':i===S.si?'var(--pri)':'#e2e8f0'}"></span>`).join("")}</div>
+      </div>
+      <div style="background:var(--card);border-radius:16px 16px 0 0;border:1px solid var(--border);border-bottom:none;padding:18px 24px">
+        <h2 style="margin:0">${sch.title}</h2>
+        <div style="width:36px;height:3px;background:var(--pri);border-radius:2px;margin-top:4px"></div>
+      </div>
+      ${recap}
+      <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 24px 20px">
+        ${stepBar}${conceptCard}${exampleCard}${checkCard}${feedbackCard}${advBtn}
+      </div>
+      <div style="background:var(--card);border-radius:0 0 16px 16px;border:1px solid var(--border);border-top:none;height:8px"></div>
+      <div id="btm" style="height:1px"></div>
+      <div style="height:20px"></div>
     </div>
-    <div style="background:var(--card);border-radius:14px 14px 0 0;border:1px solid var(--border);border-bottom:none;padding:18px 24px">
-      <h2 style="margin:0">${sch.title}</h2>
-      <div style="width:36px;height:3px;background:var(--pri);border-radius:2px;margin-top:4px"></div>
+    <div class="guided-side">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px 12px">
+        <div style="font-size:11px;font-weight:700;color:var(--txtL);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;padding-left:4px">Il tuo percorso</div>
+        ${sidebar}
+      </div>
     </div>
-    ${recap}
-    <div style="background:var(--card);border-left:1px solid var(--border);border-right:1px solid var(--border);padding:0 24px 20px">
-      ${stepBar}${conceptCard}${exampleCard}${checkCard}${feedbackCard}${advBtn}
-    </div>
-    <div style="background:var(--card);border-radius:0 0 14px 14px;border:1px solid var(--border);border-top:none;height:8px"></div>
-    <div id="btm" style="height:1px"></div>
-    <div style="height:20px"></div>
-  `;
+  </div>`;
 }
 
 /* ═════════════════════════════════
